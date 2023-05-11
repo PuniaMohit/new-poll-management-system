@@ -2,21 +2,25 @@ import "./pollList.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Form, Container, Navbar } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Trash, PencilSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
-import { removeUserData } from "../../redux/login/actions/login";
+import Header from "../Header/header";
 
 const PollList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pollIDs, setPollIDs] = useState([]);
-  const pollQuestion = useSelector((state) => state.pollList.pollList);
-  const userDetailsFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const [pageNumberLimit, setPageNumberLimit] = useState({
+    pageNumber: 1,
+    limit: 4,
+  });
+  const pollQuestion = useSelector((state) => state.pollList);
+  const userDetails = useSelector((state) => state.login.userLogin);
 
   useEffect(() => {
     setPollIDs(JSON.parse(localStorage.getItem("pollIDs")) ?? []);
-    dispatch(pollList());
+    dispatch(pollList(pageNumberLimit));
   }, []);
 
   const handleOptionClick = (pollID) => {
@@ -28,74 +32,59 @@ const PollList = () => {
 
   return (
     <div>
-      <Navbar className="navbar">
-        <Container>
-          <Navbar.Brand className="navbar-header">Poll Management</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end navbar-button">
-            <div className="button-container">
-              {userDetailsFromLocalStorage.user.roleId === 1 && (
-                <button className="add-poll-button  ">Add Poll</button>
-              )}
-              <button
-                onClick={() => {
-                  localStorage.clear();
-                  navigate("/", { replace: true });
-                  dispatch(removeUserData());
-                }}
-                variant="primary"
-                className="logout-button  "
-              >
-                Logout
-              </button>
-            </div>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Header />
       <div className="container">
-        {pollQuestion.map(({ title, optionList, id }, index) => (
-          <div key={id}>
-            <div className="title">
-              <div className="poll-title">{title}</div>
-              {userDetailsFromLocalStorage.user.roleId === 1 && (
-                <div className="edit-buttons">
-                  <Button className="btn-sm btn-light">
-                    <Trash />
-                  </Button>
-                  <Button className="btn-sm btn-light edit-button-pencil-square">
-                    <PencilSquare />
-                  </Button>
-                </div>
-              )}
+        {pollQuestion.loading ? (
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only"></span>
             </div>
-            {optionList.map((element) => {
-              const isChecked = pollIDs.includes(element.pollId);
-              const isDisabled =
-                pollIDs.includes(element.pollId) &&
-                element.pollId !== isChecked;
-              return (
-                <div className="radio-container">
-                  <Form.Check
-                    key={element.id}
-                    label={element.optionTitle}
-                    disabled={isDisabled}
-                    defaultChecked={isChecked}
-                    onClick={() => {
-                      handleOptionClick(element.pollId);
-                    }}
-                    name={`group-${index}`}
-                    type="radio"
-                    value={element.optionTitle}
-                    className="radio"
-                  />
-                  {userDetailsFromLocalStorage.user.roleId === 1 && (
-                    <PencilSquare className="edit-button-radio" />
-                  )}
-                </div>
-              );
-            })}
           </div>
-        ))}
+        ) : (
+          pollQuestion.pollList.map(({ title, optionList, id }, index) => (
+            <div key={id}>
+              <div className="title">
+                <div className="poll-title">{title}</div>
+                {userDetails.user.roleId === 1 && (
+                  <div className="edit-buttons">
+                    <Button className="btn-sm btn-light">
+                      <Trash />
+                    </Button>
+                    <Button className="btn-sm btn-light edit-button-pencil-square">
+                      <PencilSquare />
+                    </Button>
+                  </div>
+                )}
+              </div>
+              {optionList.map((element) => {
+                const isChecked = pollIDs.includes(element.pollId);
+                const isDisabled =
+                  pollIDs.includes(element.pollId) &&
+                  element.pollId !== isChecked;
+                return (
+                  <div className="radio-container">
+                    <Form.Check
+                      key={element.id}
+                      label={element.optionTitle}
+                      disabled={isDisabled}
+                      defaultChecked={isChecked}
+                      onClick={() => {
+                        handleOptionClick(element.pollId);
+                      }}
+                      name={`group-${index}`}
+                      type="radio"
+                      value={element.optionTitle}
+                      className="radio"
+                    />
+                    {userDetails.user.roleId === 1 && (
+                      <PencilSquare className="edit-button-radio" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

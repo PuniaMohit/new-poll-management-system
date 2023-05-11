@@ -3,13 +3,14 @@ import {
   POLL_LIST_SUCCESS,
   POLL_LIST_FAILURE,
 } from "../../constants";
-import api from "../../../utils/apiToken"
+import api from "../../../utils/apiToken";
 
-
-const pollList = () => async (dispatch) => {
+const pollList = (pageNumberLimit) => async (dispatch) => {
   try {
     dispatch({ type: POLL_LIST_REQUEST });
-    const { data } = await api.get("/poll/list/1?limit=4");
+    const { data } = await api.get(
+      `/poll/list/${pageNumberLimit.pageNumber}?limit=${pageNumberLimit.limit}`
+    );
     dispatch({
       type: POLL_LIST_SUCCESS,
       payload: data.rows,

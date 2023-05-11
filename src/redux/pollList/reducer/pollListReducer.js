@@ -5,7 +5,7 @@ import {
 } from "../../constants";
 
 const initialState = {
-  pollList: [{ title: "", optionList: [{ optionTitle: "" }] }],
+  pollList: [],
   loading: false,
   error: null,
 };
@@ -16,16 +16,12 @@ const pollListReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        pollListTitle: "",
-        pollListOptions: [],
         error: null,
       };
     case POLL_LIST_SUCCESS:
       return {
         ...state,
         loading: false,
-        // pollListTitle: action.payload.title,
-        // pollListOptions: action.payload.optionList,
         pollList: action.payload,
         error: null,
       };
@@ -33,8 +29,6 @@ const pollListReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        pollListTitle: "",
-        pollListOptions: [],
         error: action.payload,
       };
     default:
