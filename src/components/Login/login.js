@@ -87,9 +87,9 @@ const LoginPage = () => {
           No Account?{" "}
           <span
             className="navigate-signup text-primary"
-            // onClick={() => navigate("./signup")}.. commented for further reference as signup page is not created
+            onClick={() => navigate("./signup")}
           >
-            Login
+            SignUp
           </span>
         </div>
       </form>
