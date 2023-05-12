@@ -7,6 +7,7 @@ import { Trash, PencilSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddPoll/addPoll";
+import voteCount from "../../redux/voteCount/actions/votecount";
 
 const PollList = () => {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const PollList = () => {
                       defaultChecked={isChecked}
                       onClick={() => {
                         handleOptionClick(element.pollId);
+                        dispatch(voteCount({ optionId: element.id }));
                       }}
                       name={`group-${index}`}
                       type="radio"
