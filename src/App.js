@@ -17,9 +17,7 @@ function App() {
     if (userDetails) {
       dispatch(userDetailsFromLocalStorage(userDetails));
       const path = location.pathname;
-      if (path === "/pollList") navigate("/pollList");
-      else if (path === "/addPoll") navigate("/addPoll");
-
+      if (path === "/") navigate("/pollList");
     }
   }, [navigate, dispatch]);
   return (
