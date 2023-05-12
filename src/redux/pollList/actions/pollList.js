@@ -8,12 +8,12 @@ import api from "../../../utils/apiToken";
 const pollList = (pageNumberLimit) => async (dispatch) => {
   try {
     dispatch({ type: POLL_LIST_REQUEST });
-    const { data } = await api.get(
+    const data = await api.get(
       `/poll/list/${pageNumberLimit.pageNumber}?limit=${pageNumberLimit.limit}`
     );
     dispatch({
       type: POLL_LIST_SUCCESS,
-      payload: data.rows,
+      payload: data.data.rows,
     });
   } catch (error) {
     dispatch({

@@ -6,6 +6,7 @@ import { Button, Form } from "react-bootstrap";
 import { Trash, PencilSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
+import AddPoll from "../AddPoll/addPoll";
 
 const PollList = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,18 @@ const PollList = () => {
   return (
     <div>
       <Header />
+
       <div className="container">
+        <div className="container-add-poll-button">
+          {userDetails && userDetails.user.roleId === 1 && (
+            <button
+              className="show-add-poll-button"
+              onClick={() => navigate("/addPoll")}
+            >
+              Add Poll
+            </button>
+          )}
+        </div>
         {pollQuestion.loading ? (
           <div class="d-flex justify-content-center">
             <div class="spinner-border text-success" role="status">

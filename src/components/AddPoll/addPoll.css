@@ -1,0 +1,54 @@
+.container-add-poll {
+    width: 30%;
+    margin: 5% auto;
+}
+
+.title-add-poll {
+    margin: 5% auto;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.input-list {
+    display: inline-block;
+    padding: 2%;
+    margin-bottom: 3%;
+    color: white;
+    border-radius: 5px;
+    margin-left: 1%;
+    background-color: #a0cfa2;
+}
+
+.option-title {
+    display: inline-block;
+}
+
+.input-list-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.edit-button {
+    cursor: pointer;
+    margin-left: 5%;
+}
+
+.delete-button {
+    margin-left: 5%;
+    cursor: pointer;
+}
+
+.add-poll-button {
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 5px;
+    padding: 2.5% 39%;
+    margin-top: 1%;
+    color: white;
+    cursor: pointer;
+}
+
+.add-poll-button:active {
+    background-color: #035638;
+}
