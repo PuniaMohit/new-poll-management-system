@@ -1,0 +1,78 @@
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 30%;
+}
+
+.navbar {
+    background-color: #A0CFA2;
+    margin-bottom: 2%;
+}
+
+.navbar-header {
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+}
+
+.title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.add-poll-button {
+    margin-right: 2%;
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 5px;
+    padding: 1% 5%;
+    color: white;
+}
+
+
+.logout-button {
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 5px;
+    padding: 2% 7%;
+    color: white;
+}
+
+.poll-title {
+    font-size: 1.5rem;
+    color: #04aa6d;
+    font-weight: 700;
+    padding-right: 1%;
+}
+
+.edit-button {
+    margin-left: 1%;
+}
+
+
+
+.radio {
+    margin-left: 1%;
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+}
+
+.edit-buttons {
+    display: flex;
+}
+
+.edit-button-radio {
+    margin-left: 1%;
+    color: gray;
+    cursor: pointer;
+    font-size: 0.6rem;
+}
+
+.edit-button-pencil-square {
+    margin-left: 10%;
+}

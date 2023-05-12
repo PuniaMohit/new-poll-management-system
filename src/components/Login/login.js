@@ -34,8 +34,7 @@ const LoginPage = () => {
     const { userLogin, error } = successOrErrorMessage;
     if (userLogin) {
       localStorage.setItem("user", JSON.stringify(userLogin));
-      console.log("user information stored in local storage") //this one console is just to show that login all functionlaity is working
-    //   navigate("/pollList"); commented it for further reference
+      navigate("/pollList");
     } else if (error) {
       const errorMessage = error.message;
       setFormErrors((prevState) => ({
