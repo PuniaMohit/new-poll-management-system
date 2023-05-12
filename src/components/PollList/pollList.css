@@ -4,6 +4,11 @@
     width: 30%;
 }
 
+.container-add-poll-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .navbar {
     background-color: #A0CFA2;
     margin-bottom: 2%;
@@ -15,6 +20,10 @@
     font-weight: 700;
 }
 
+.navbar-header:hover {
+    color: white;
+}
+
 .title {
     display: flex;
     justify-content: flex-start;
@@ -22,12 +31,12 @@
 }
 
 
-.add-poll-button {
+.show-add-poll-button {
     margin-right: 2%;
     background-color: #04AA6D;
     border: none;
     border-radius: 5px;
-    padding: 1% 5%;
+    padding: 0.5% 2%;
     color: white;
 }
 
@@ -38,6 +47,11 @@
     border-radius: 5px;
     padding: 2% 7%;
     color: white;
+}
+
+.show-add-poll-button:active,
+.logout-button:active {
+    background-color: #035638;
 }
 
 .poll-title {

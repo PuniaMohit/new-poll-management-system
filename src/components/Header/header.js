@@ -1,7 +1,9 @@
 import { Container, Navbar } from "react-bootstrap";
 import { removeUserData } from "../../redux/login/actions/login";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import AddPoll from "../AddPoll/addPoll";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -14,9 +16,6 @@ const Header = () => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end navbar-button">
           <div className="button-container">
-            {userDetails && userDetails.user.roleId === 1 && (
-              <button className="add-poll-button  ">Add Poll</button>
-            )}
             <button
               onClick={() => {
                 localStorage.clear();
