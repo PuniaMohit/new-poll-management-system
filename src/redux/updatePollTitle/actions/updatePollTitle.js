@@ -4,7 +4,7 @@ import {
     UPDATE_POLL_TITLE_FAILURE,
   } from "../../constants";
   
-  import api from "../../Tokenapi"
+  import api from "../../...utils/apiToken"
   
    const updatePollTitle = (updatedTitle, id) => async (dispatch) => {
     try {
