@@ -5,6 +5,7 @@ import roleList from "./rolelist/reducer/roleListReducer";
 import pollListReducer from "./pollList/reducer/pollListReducer";
 import addPollReducer from "./addPoll/reducer/addPollReducer";
 import voteCountReducer from "./voteCount/reducer/voteCountReducer";
+import deletePollReducer from "./delete/reducers/deletePollReducer";
 
 const reducers = combineReducers({
   login: loginReducer,
@@ -12,7 +13,8 @@ const reducers = combineReducers({
   roleList: roleList,
   pollList: pollListReducer,
   addPoll: addPollReducer,
-  voteCount: voteCountReducer
+  voteCount: voteCountReducer,
+  deletePoll: deletePollReducer
 });
 
 export default reducers;

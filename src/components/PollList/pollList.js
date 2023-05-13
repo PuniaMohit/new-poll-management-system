@@ -7,10 +7,11 @@ import { Trash, PencilSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddPoll/addPoll";
-import voteCount from "../../redux/voteCount/actions/votecount";
+import voteCount, { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
 import SuccessMessage from "../../utils/successMessage/successMessage";
-import { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
 import { optionVoteCount } from "../../utils/voteCountUtils";
+import deletePoll, { emptyDeletePollSuccessStatus } from "../../redux/delete/actions/deletePoll";
+
 
 const PollList = () => {
   const dispatch = useDispatch();
@@ -25,17 +26,28 @@ const PollList = () => {
   const pollQuestion = useSelector((state) => state.pollList);
   const userDetails = useSelector((state) => state.login.userLogin);
   const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
+  const deletePollSuccessStatus = useSelector((state) => state.deletePoll.status);
 
   useEffect(() => {
-    voteCountSuccessStatus === 200 && setShowVoteCountSuccessMessage(true);
-    dispatch(emptyVoteCountSuccessStatus());
     setPollOptionIds({
       pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
       optionIds: JSON.parse(localStorage.getItem("optionIds")) || []
     });
-    dispatch(pollList(pageNumberLimit));
-  }, [voteCountSuccessStatus]);
+  }, []);
 
+  useEffect(() => {
+    dispatch(pollList(pageNumberLimit));
+  }, [])
+
+  useEffect(() => {
+    voteCountSuccessStatus === 200 && setShowVoteCountSuccessMessage(true);
+    dispatch(emptyVoteCountSuccessStatus());
+  }, [voteCountSuccessStatus])
+
+  useEffect(() => {
+    deletePollSuccessStatus === 200 && dispatch(pollList(pageNumberLimit));
+    dispatch(emptyDeletePollSuccessStatus());
+  }, [deletePollSuccessStatus])
 
   const optionClickVoteCount = (pollID, optionId) => {
     optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds)
@@ -72,7 +84,7 @@ const PollList = () => {
                 <div className="poll-title">{title}</div>
                 {userDetails.user.roleId === 1 && (
                   <div className="edit-buttons">
-                    <Button className="btn-sm btn-light">
+                    <Button className="btn-sm btn-light" onClick={() => dispatch(deletePoll(id))}>
                       <Trash />
                     </Button>
                     <Button className="btn-sm btn-light edit-button-pencil-square">
