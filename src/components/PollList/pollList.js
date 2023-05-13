@@ -7,34 +7,47 @@ import { Trash, PencilSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddPoll/addPoll";
+import voteCount from "../../redux/voteCount/actions/votecount";
+import SuccessMessage from "../../utils/successMessage/successMessage";
+import { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
+import { optionVoteCount } from "../../utils/voteCountUtils";
 
 const PollList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [pollIDs, setPollIDs] = useState([]);
+  const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
+    useState(false);
+  const [pollOptionIds, setPollOptionIds] = useState({ pollIds: [], optionIds: [] });
   const [pageNumberLimit, setPageNumberLimit] = useState({
     pageNumber: 1,
     limit: 4,
   });
   const pollQuestion = useSelector((state) => state.pollList);
   const userDetails = useSelector((state) => state.login.userLogin);
+  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
 
   useEffect(() => {
-    setPollIDs(JSON.parse(localStorage.getItem("pollIDs")) ?? []);
+    voteCountSuccessStatus === 200 && setShowVoteCountSuccessMessage(true);
+    dispatch(emptyVoteCountSuccessStatus());
+    setPollOptionIds({
+      pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
+      optionIds: JSON.parse(localStorage.getItem("optionIds")) || []
+    });
     dispatch(pollList(pageNumberLimit));
-  }, []);
+  }, [voteCountSuccessStatus]);
 
-  const handleOptionClick = (pollID) => {
-    if (!pollIDs.includes(pollID)) {
-      setPollIDs((prevPollIDs) => [...prevPollIDs, pollID]);
-      localStorage.setItem("pollIDs", JSON.stringify([...pollIDs, pollID]));
-    }
+
+  const optionClickVoteCount = (pollID, optionId) => {
+    optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds)
   };
 
   return (
     <div>
       <Header />
-
+      <SuccessMessage
+        show={showVoteCountSuccessMessage}
+        setShow={setShowVoteCountSuccessMessage}
+      />
       <div className="container">
         <div className="container-add-poll-button">
           {userDetails && userDetails.user.roleId === 1 && (
@@ -69,10 +82,9 @@ const PollList = () => {
                 )}
               </div>
               {optionList.map((element) => {
-                const isChecked = pollIDs.includes(element.pollId);
+                const isChecked = pollOptionIds.optionIds.includes(element.id);
                 const isDisabled =
-                  pollIDs.includes(element.pollId) &&
-                  element.pollId !== isChecked;
+                  pollOptionIds.pollIds.includes(element.pollId)
                 return (
                   <div className="radio-container">
                     <Form.Check
@@ -81,7 +93,8 @@ const PollList = () => {
                       disabled={isDisabled}
                       defaultChecked={isChecked}
                       onClick={() => {
-                        handleOptionClick(element.pollId);
+                        optionClickVoteCount(element.pollId, element.id)
+                        dispatch(voteCount({ optionId: element.id }));
                       }}
                       name={`group-${index}`}
                       type="radio"
