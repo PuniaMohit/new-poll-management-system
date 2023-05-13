@@ -6,6 +6,7 @@ import SignUpPage from "./components/Signup/signUp";
 import PollList from "./components/PollList/pollList";
 import AddPoll from "./components/AddPoll/addPoll";
 import { userDetailsFromLocalStorage } from "./redux/login/actions/login";
+import UpdatePollTitle from "./components/UpdatePollTitle/updatePollTitle";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/" element={<LoginPage />} />
         <Route exact path="/pollList" element={<PollList />} />
         <Route exact path="/addPoll" element={<AddPoll />} />
+        <Route exact path="/updatePollTitle" element={<UpdatePollTitle />} />
         <Route exact path="/signup" element={<SignUpPage />} />
       </Routes>
     </div>

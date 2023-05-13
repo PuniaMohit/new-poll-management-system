@@ -87,7 +87,7 @@ const PollList = () => {
                     <Button className="btn-sm btn-light" onClick={() => dispatch(deletePoll(id))}>
                       <Trash />
                     </Button>
-                    <Button className="btn-sm btn-light edit-button-pencil-square">
+                    <Button className="btn-sm btn-light edit-button-pencil-square" onClick={()=>navigate("/updatePollTitle")}>
                       <PencilSquare />
                     </Button>
                   </div>
