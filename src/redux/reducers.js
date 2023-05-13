@@ -4,13 +4,15 @@ import signUpReducer from "./signup/reducer/signUpReducer";
 import roleList from "./rolelist/reducer/roleListReducer";
 import pollListReducer from "./pollList/reducer/pollListReducer";
 import addPollReducer from "./addPoll/reducer/addPollReducer";
+import voteCountReducer from "./voteCount/reducer/voteCountReducer";
 
 const reducers = combineReducers({
   login: loginReducer,
   signUp: signUpReducer,
   roleList: roleList,
   pollList: pollListReducer,
-  addPoll: addPollReducer
+  addPoll: addPollReducer,
+  voteCount: voteCountReducer
 });
 
 export default reducers;
