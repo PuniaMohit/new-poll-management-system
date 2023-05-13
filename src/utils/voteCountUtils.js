@@ -1,4 +1,4 @@
-export const optionClick = (pollID, optionId, pollOptionIds, setPollOptionIds) => {
+export const optionVoteCount = (pollID, optionId, pollOptionIds, setPollOptionIds) => {
     setPollOptionIds((prevState) => ({
         ...prevState,
         pollIds: [...prevState.pollIds, pollID],

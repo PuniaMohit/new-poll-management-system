@@ -10,7 +10,7 @@ import AddPoll from "../AddPoll/addPoll";
 import voteCount from "../../redux/voteCount/actions/votecount";
 import SuccessMessage from "../../utils/successMessage/successMessage";
 import { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
-import { optionClick } from "../../utils/pollListUtils";
+import { optionVoteCount } from "../../utils/voteCountUtils";
 
 const PollList = () => {
   const dispatch = useDispatch();
@@ -37,8 +37,8 @@ const PollList = () => {
   }, [voteCountSuccessStatus]);
 
 
-  const handleOptionClick = (pollID, optionId) => {
-    optionClick(pollID, optionId, pollOptionIds, setPollOptionIds)
+  const optionClickVoteCount = (pollID, optionId) => {
+    optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds)
   };
 
   return (
@@ -93,7 +93,7 @@ const PollList = () => {
                       disabled={isDisabled}
                       defaultChecked={isChecked}
                       onClick={() => {
-                        handleOptionClick(element.pollId, element.id)
+                        optionClickVoteCount(element.pollId, element.id)
                         dispatch(voteCount({ optionId: element.id }));
                       }}
                       name={`group-${index}`}
