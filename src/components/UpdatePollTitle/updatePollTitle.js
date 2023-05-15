@@ -44,7 +44,7 @@ const UpdatePollTitle = () => {
           onChange={handleTitleChange}
           isInvalid={error}
         />
-        <FormControl.Feedback type="invalid" style={{ display: "block" }}>
+        <FormControl.Feedback type="invalid">
           {error}
         </FormControl.Feedback>
       </InputGroup>
