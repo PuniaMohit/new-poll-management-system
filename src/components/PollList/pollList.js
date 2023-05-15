@@ -3,25 +3,34 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
-import { Trash, PencilSquare } from "react-bootstrap-icons";
+import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddPoll/addPoll";
-import voteCount, { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
+import voteCount, {
+  emptyVoteCountSuccessStatus,
+} from "../../redux/voteCount/actions/votecount";
 import SuccessMessage from "../../utils/successMessage/successMessage";
 import { optionVoteCount } from "../../utils/voteCountUtils";
-import deletePoll, { emptyDeletePollSuccessStatus } from "../../redux/delete/actions/deletePoll";
+import deletePoll, {
+  emptyDeletePollSuccessStatus,
+} from "../../redux/delete/actions/deletePoll";
 
 const PollList = () => {
   const pollQuestion = useSelector((state) => state.pollList);
   const userDetails = useSelector((state) => state.login.userLogin);
   const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
-  const deletePollSuccessStatus = useSelector((state) => state.deletePoll.status);
+  const deletePollSuccessStatus = useSelector(
+    (state) => state.deletePoll.status
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
     useState(false);
-  const [pollOptionIds, setPollOptionIds] = useState({ pollIds: [], optionIds: [] });
+  const [pollOptionIds, setPollOptionIds] = useState({
+    pollIds: [],
+    optionIds: [],
+  });
   const [pageNumberLimit, setPageNumberLimit] = useState({
     pageNumber: 1,
     limit: 4,
@@ -30,26 +39,26 @@ const PollList = () => {
   useEffect(() => {
     setPollOptionIds({
       pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
-      optionIds: JSON.parse(localStorage.getItem("optionIds")) || []
+      optionIds: JSON.parse(localStorage.getItem("optionIds")) || [],
     });
   }, []);
 
   useEffect(() => {
     dispatch(pollList(pageNumberLimit));
-  }, [])
+  }, []);
 
   useEffect(() => {
     voteCountSuccessStatus === 200 && setShowVoteCountSuccessMessage(true);
     dispatch(emptyVoteCountSuccessStatus());
-  }, [voteCountSuccessStatus])
+  }, [voteCountSuccessStatus]);
 
   useEffect(() => {
     deletePollSuccessStatus === 200 && dispatch(pollList(pageNumberLimit));
     dispatch(emptyDeletePollSuccessStatus());
-  }, [deletePollSuccessStatus])
+  }, [deletePollSuccessStatus]);
 
   const optionClickVoteCount = (pollID, optionId) => {
-    optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds)
+    optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
   };
 
   return (
@@ -83,21 +92,36 @@ const PollList = () => {
                 <div className="poll-title">{title}</div>
                 {userDetails.user.roleId === 1 && (
                   <div className="edit-buttons">
-                    <Button className="btn-sm btn-light" onClick={() => dispatch(deletePoll(id))}>
+                    <Button
+                      className="btn-sm btn-light"
+                      onClick={() => dispatch(deletePoll(id))}
+                    >
                       <Trash />
                     </Button>
-                    <Button className="btn-sm btn-light edit-button-pencil-square" onClick={() => {
-                      navigate(`/updatePollTitle/${title}/${id}`)
-                    }}>
+                    <Button
+                      className="btn-sm btn-light edit-button-pencil-square"
+                      onClick={() => {
+                        navigate(`/updatePollTitle/${title}/${id}`);
+                      }}
+                    >
                       <PencilSquare />
+                    </Button>
+                    <Button
+                      className="btn-sm btn-light single-poll-button"
+                      onClick={() => {
+                        navigate(`/singlePoll/${id}`);
+                      }}
+                    >
+                      <ArrowRightSquare />
                     </Button>
                   </div>
                 )}
               </div>
               {optionList.map((element) => {
                 const isChecked = pollOptionIds.optionIds.includes(element.id);
-                const isDisabled =
-                  pollOptionIds.pollIds.includes(element.pollId)
+                const isDisabled = pollOptionIds.pollIds.includes(
+                  element.pollId
+                );
                 return (
                   <div className="radio-container">
                     <Form.Check
@@ -106,7 +130,7 @@ const PollList = () => {
                       disabled={isDisabled}
                       defaultChecked={isChecked}
                       onClick={() => {
-                        optionClickVoteCount(element.pollId, element.id)
+                        optionClickVoteCount(element.pollId, element.id);
                         dispatch(voteCount({ optionId: element.id }));
                       }}
                       name={`group-${index}`}
