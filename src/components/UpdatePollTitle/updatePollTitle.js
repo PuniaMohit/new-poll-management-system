@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { InputGroup, FormControl, Button, Modal } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import updatePollTitle from "../../redux/updatePollTitle/actions/updatePollTitle"
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import updatePollTitle, { emptyUpdatePollTitleDetailsSuccessStatus } from "../../redux/updatePollTitle/actions/updatePollTitle"
+import "./updatePollTitle.css"
 
-const UpdatePollTitle = (props) => {
-    const dispatch=useDispatch()
-  const { show, setShow, id } = props;
-  const [title, setTitle] = useState("");
-  const [error, setError] = useState("");
+const UpdatePollTitle = () => {
+  const updatPollTitleDetails = useSelector(state => state.updatePollTitleDetails)
+  const userLoginDetails = useSelector((state) => state.login.userLogin);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [title, setTitle] = useState(updatPollTitleDetails.updatePollTitleDetails.title)
+  const [error, setError] = useState("")
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -20,33 +24,33 @@ const UpdatePollTitle = (props) => {
       setError("Title must be at least 8 characters long");
       return;
     }
-    const userId=JSON.parse(localStorage.getItem("user")).id
-    dispatch(updatePollTitle({title:title, createdBy:userId}, id))
-    setShow(false);
+    dispatch(updatePollTitle({ title: title, createdBy: userLoginDetails.user.id }, updatPollTitleDetails.updatePollTitleDetails.pollId))
   };
 
+  useEffect(() => {
+    updatPollTitleDetails.status === 200 && navigate("/pollList")
+    dispatch(emptyUpdatePollTitleDetailsSuccessStatus())
+  }, [updatPollTitleDetails.status])
   return (
-<div>
-    <Modal.Title id="example-custom-modal-styling-title">
-      UPDATE POLL TITLE
-    </Modal.Title>
-  <Modal.Body>
-    <InputGroup className="mb-3">
-      <FormControl
-        placeholder="Enter poll title"
-        value={title}
-        onChange={handleTitleChange}
-        isInvalid={error}
-      />
-      <FormControl.Feedback type="invalid" style={{ display: "block" }}>
-        {error}
-      </FormControl.Feedback>
-    </InputGroup>
-    <Button className="cursor-pointer" variant="primary" onClick={handleUpdate}>
-      Update
-    </Button>
-  </Modal.Body>
-</div>
+    <div className="update-poll-title-container">
+      <Modal.Title id="example-custom-modal-styling-title" className="update-poll-title">
+        UPDATE POLL TITLE
+      </Modal.Title>
+      <InputGroup className="mb-3 mt-4">
+        <FormControl
+          placeholder="Enter poll title"
+          value={title}
+          onChange={handleTitleChange}
+          isInvalid={error}
+        />
+        <FormControl.Feedback type="invalid" style={{ display: "block" }}>
+          {error}
+        </FormControl.Feedback>
+      </InputGroup>
+      <button className="cursor-pointer update-poll-title-button" variant="primary" onClick={handleUpdate}>
+        {updatPollTitleDetails.loading ? "Loading..." : "Update"}
+      </button>
+    </div>
 
 
 

@@ -22,15 +22,13 @@ function App() {
     }
   }, [navigate, dispatch]);
   return (
-    <div>
-      <Routes>
-        <Route exact path="/" element={<LoginPage />} />
-        <Route exact path="/pollList" element={<PollList />} />
-        <Route exact path="/addPoll" element={<AddPoll />} />
-        <Route exact path="/updatePollTitle" element={<UpdatePollTitle />} />
-        <Route exact path="/signup" element={<SignUpPage />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route exact path="/" element={<LoginPage />} />
+      <Route exact path="/pollList" element={<PollList />} />
+      <Route exact path="/addPoll" element={<AddPoll />} />
+      <Route exact path="/updatePollTitle" element={<UpdatePollTitle />} />
+      <Route exact path="/signup" element={<SignUpPage />} />
+    </Routes>
   );
 }
 
