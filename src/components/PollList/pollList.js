@@ -12,8 +12,11 @@ import SuccessMessage from "../../utils/successMessage/successMessage";
 import { optionVoteCount } from "../../utils/voteCountUtils";
 import deletePoll, { emptyDeletePollSuccessStatus } from "../../redux/delete/actions/deletePoll";
 
-
 const PollList = () => {
+  const pollQuestion = useSelector((state) => state.pollList);
+  const userDetails = useSelector((state) => state.login.userLogin);
+  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
+  const deletePollSuccessStatus = useSelector((state) => state.deletePoll.status);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
@@ -23,10 +26,6 @@ const PollList = () => {
     pageNumber: 1,
     limit: 4,
   });
-  const pollQuestion = useSelector((state) => state.pollList);
-  const userDetails = useSelector((state) => state.login.userLogin);
-  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
-  const deletePollSuccessStatus = useSelector((state) => state.deletePoll.status);
 
   useEffect(() => {
     setPollOptionIds({
@@ -87,7 +86,9 @@ const PollList = () => {
                     <Button className="btn-sm btn-light" onClick={() => dispatch(deletePoll(id))}>
                       <Trash />
                     </Button>
-                    <Button className="btn-sm btn-light edit-button-pencil-square">
+                    <Button className="btn-sm btn-light edit-button-pencil-square" onClick={() => {
+                      navigate(`/updatePollTitle/${title}/${id}`)
+                    }}>
                       <PencilSquare />
                     </Button>
                   </div>
