@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { InputGroup, FormControl, Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import updatePollTitle, { emptyUpdatePollTitleDetailsSuccessStatus } from "../../redux/updatePollTitle/actions/updatePollTitle"
 import "./updatePollTitle.css"
 
 const UpdatePollTitle = () => {
+  const { pollTitle, pollId } = useParams();
   const updatPollTitleDetails = useSelector(state => state.updatePollTitleDetails)
   const userLoginDetails = useSelector((state) => state.login.userLogin);
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [title, setTitle] = useState(updatPollTitleDetails.updatePollTitleDetails.title)
+  const [title, setTitle] = useState(pollTitle)
   const [error, setError] = useState("")
 
   const handleTitleChange = (event) => {
@@ -24,7 +25,7 @@ const UpdatePollTitle = () => {
       setError("Title must be at least 8 characters long");
       return;
     }
-    dispatch(updatePollTitle({ title: title, createdBy: userLoginDetails.user.id }, updatPollTitleDetails.updatePollTitleDetails.pollId))
+    dispatch(updatePollTitle({ title: title, createdBy: userLoginDetails.user.id }, pollId))
   };
 
   useEffect(() => {

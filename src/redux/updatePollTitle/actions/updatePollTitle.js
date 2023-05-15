@@ -2,7 +2,6 @@ import {
   UPDATE_POLL_TITLE_REQUEST,
   UPDATE_POLL_TITLE_SUCCESS,
   UPDATE_POLL_TITLE_FAILURE,
-  STORE_UPDATE_POLL_TITLE_DETAILS,
   EMPTY_UPDATE_POLL_TITLE_DETAILS_SUCCESS_STATUS
 } from "../../constants";
 
@@ -25,10 +24,6 @@ const updatePollTitle = (updatedTitle, id) => async (dispatch) => {
 };
 
 export default updatePollTitle;
-
-export const storeUpdatePollTitleDetails = (pollTitleId) => (dispatch) => {
-  dispatch({ type: STORE_UPDATE_POLL_TITLE_DETAILS, payload: pollTitleId })
-}
 
 export const emptyUpdatePollTitleDetailsSuccessStatus = () => (dispatch) => {
   dispatch({ type: EMPTY_UPDATE_POLL_TITLE_DETAILS_SUCCESS_STATUS })

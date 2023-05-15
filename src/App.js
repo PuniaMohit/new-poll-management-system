@@ -26,7 +26,7 @@ function App() {
       <Route exact path="/" element={<LoginPage />} />
       <Route exact path="/pollList" element={<PollList />} />
       <Route exact path="/addPoll" element={<AddPoll />} />
-      <Route exact path="/updatePollTitle" element={<UpdatePollTitle />} />
+      <Route exact path="/updatePollTitle/:pollTitle/:pollId" element={<UpdatePollTitle />} />
       <Route exact path="/signup" element={<SignUpPage />} />
     </Routes>
   );

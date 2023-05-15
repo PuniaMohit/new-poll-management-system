@@ -11,8 +11,6 @@ import voteCount, { emptyVoteCountSuccessStatus } from "../../redux/voteCount/ac
 import SuccessMessage from "../../utils/successMessage/successMessage";
 import { optionVoteCount } from "../../utils/voteCountUtils";
 import deletePoll, { emptyDeletePollSuccessStatus } from "../../redux/delete/actions/deletePoll";
-import { storeUpdatePollTitleDetails } from "../../redux/updatePollTitle/actions/updatePollTitle"
-
 
 const PollList = () => {
   const pollQuestion = useSelector((state) => state.pollList);
@@ -89,8 +87,7 @@ const PollList = () => {
                       <Trash />
                     </Button>
                     <Button className="btn-sm btn-light edit-button-pencil-square" onClick={() => {
-                      navigate("/updatePollTitle")
-                      dispatch(storeUpdatePollTitleDetails({ title: title, pollId: id }))
+                      navigate(`/updatePollTitle/${title}/${id}`)
                     }}>
                       <PencilSquare />
                     </Button>
