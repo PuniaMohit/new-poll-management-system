@@ -1,4 +1,4 @@
-export const selectedRadio=( pollId,optionId,setPollOptionIds,pollOptionIds,dispatch,voteCount)=>{
+export const singlePollVoteCount=( pollId,optionId,setPollOptionIds,pollOptionIds,dispatch,voteCount)=>{
     setPollOptionIds((prevState) => ({
       ...prevState,
       pollIds: [...prevState.pollIds, pollId],

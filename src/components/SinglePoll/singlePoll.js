@@ -8,7 +8,7 @@ import voteCount from "../../redux/voteCount/actions/votecount";
 import Header from "../Header/header";
 import { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
 import BackArrow from "../../utils/BackArrow/backArrow";
-import { selectedRadio } from "../../utils/singlePollUtils";
+import { singlePollVoteCount } from "../../utils/singlePollUtils";
 
 const SinglePollPage = () => {
   const pollDetails = useSelector((state) => state.singlePoll);
@@ -20,8 +20,8 @@ const SinglePollPage = () => {
   const dispatch = useDispatch();
   const { pollId } = useParams();
 
-  const selectRadio = (pollId, optionId) => {
-    selectedRadio(
+  const handleSinglePollVoteCount = (pollId, optionId) => {
+    singlePollVoteCount(
       pollId,
       optionId,
       setPollOptionIds,
@@ -63,7 +63,7 @@ const SinglePollPage = () => {
                       disabled={pollOptionIds.pollIds.includes(element.pollId)}
                       checked={pollOptionIds.optionIds.includes(element.id)}
                       onClick={() => {
-                        selectRadio(element.pollId, element.id);
+                        handleSinglePollVoteCount(element.pollId, element.id);
                       }}
                       name={`group-${index}`}
                       type="radio"
