@@ -65,7 +65,7 @@
     margin-left: 1%;
 }
 
-.single-poll-button{
+.single-poll-button {
     margin-left: 9%;
 }
 
@@ -94,3 +94,6 @@
     margin-left: 10%;
 }
 
+.vote-count {
+    margin-left: 1%;
+}

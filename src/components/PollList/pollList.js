@@ -48,7 +48,10 @@ const PollList = () => {
   }, []);
 
   useEffect(() => {
-    voteCountSuccessStatus === 200 && setShowVoteCountSuccessMessage(true);
+    if (voteCountSuccessStatus === 200) {
+      setShowVoteCountSuccessMessage(true);
+      dispatch(pollList(pageNumberLimit));
+    }
     dispatch(emptyVoteCountSuccessStatus());
   }, [voteCountSuccessStatus]);
 
@@ -141,6 +144,9 @@ const PollList = () => {
                     {userDetails.user.roleId === 1 && (
                       <PencilSquare className="edit-button-radio" />
                     )}
+                    <div className="vote-count">
+                      {element.voteCount.length} Votes
+                    </div>
                   </div>
                 );
               })}
