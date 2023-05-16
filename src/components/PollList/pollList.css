@@ -65,6 +65,9 @@
     margin-left: 1%;
 }
 
+.single-poll-button {
+    margin-left: 9%;
+}
 
 
 .radio {
@@ -91,3 +94,6 @@
     margin-left: 10%;
 }
 
+.vote-count {
+    margin-left: 1%;
+}

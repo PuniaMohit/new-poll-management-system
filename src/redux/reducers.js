@@ -7,6 +7,7 @@ import addPollReducer from "./addPoll/reducer/addPollReducer";
 import voteCountReducer from "./voteCount/reducer/voteCountReducer";
 import deletePollReducer from "./delete/reducers/deletePollReducer";
 import updatePollTitleReducer from "./updatePollTitle/reducer/updatePollTitleReducer";
+import singlePollReducer from "./singlePoll/reducer/singlePollReducer";
 
 const reducers = combineReducers({
   login: loginReducer,
@@ -16,7 +17,8 @@ const reducers = combineReducers({
   addPoll: addPollReducer,
   voteCount: voteCountReducer,
   deletePoll: deletePollReducer,
-  updatePollTitleDetails: updatePollTitleReducer
+  updatePollTitleDetails: updatePollTitleReducer,
+  singlePoll: singlePollReducer,
 });
 
 export default reducers;
