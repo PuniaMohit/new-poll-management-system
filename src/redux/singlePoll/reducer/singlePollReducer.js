@@ -4,23 +4,16 @@ import {
   SINGLE_POLL_FAILURE,
 } from "../../constants";
 
-const initialState = {
-  singlePollDetails: "",
-  loading:false,
-};
+const initialState = "";
 
 const singlePollReducer = (state = initialState, action) => {
   switch (action.type) {
     case SINGLE_POLL_REQUEST:
-      return { ...state, loading: true, singlePollDetails: "" };
+      return (state = "");
     case SINGLE_POLL_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        singlePollDetails: action.payload.data,
-      };
+      return (state = action.payload.data);
     case SINGLE_POLL_FAILURE:
-      return { ...state,loading:false, singlePollDetails: "" };
+      return (state = "");
     default:
       return state;
   }
