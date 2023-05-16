@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   singlePollDetails: "",
+  loading:false,
 };
 
 const singlePollReducer = (state = initialState, action) => {
@@ -19,7 +20,7 @@ const singlePollReducer = (state = initialState, action) => {
         singlePollDetails: action.payload.data,
       };
     case SINGLE_POLL_FAILURE:
-      return { ...state, singlePollDetails: "" };
+      return { ...state,loading:false, singlePollDetails: "" };
     default:
       return state;
   }

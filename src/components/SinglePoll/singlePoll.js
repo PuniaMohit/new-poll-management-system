@@ -8,11 +8,10 @@ import voteCount from "../../redux/voteCount/actions/votecount";
 import Header from "../Header/header";
 import { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
 import BackArrow from "../../utils/BackArrow/backArrow";
+import { selectedRadio } from "../../utils/singlePollUtils";
 
 const SinglePollPage = () => {
-  const pollDetails = useSelector(
-    (state) => state.singlePoll.singlePollDetails
-  );
+  const pollDetails = useSelector((state) => state.singlePoll);
   const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
   const [pollOptionIds, setPollOptionIds] = useState({
     pollIds: [],
@@ -20,6 +19,17 @@ const SinglePollPage = () => {
   });
   const dispatch = useDispatch();
   const { pollId } = useParams();
+
+  const selectRadio = (pollId, optionId) => {
+    selectedRadio(
+      pollId,
+      optionId,
+      setPollOptionIds,
+      pollOptionIds,
+      dispatch,
+      voteCount
+    );
+  };
   useEffect(() => {
     dispatch(singlePoll(pollId));
     setPollOptionIds({
@@ -37,56 +47,49 @@ const SinglePollPage = () => {
     <div>
       <Header />
       <BackArrow />
-      {pollDetails && (
-        <div className="single-poll-container">
-          <div className="single-poll-title">{pollDetails.title}</div>
-          <div className="single-poll-radio-container">
-            {pollDetails.optionList
-              .slice()
-              .reverse()
-              .map((element, index) => {
-                return (
-                  <div className="single-poll-one-radio-container">
-                    <Form.Check
-                      key={element.id}
-                      label={element.optionTitle}
-                      disabled={pollOptionIds.pollIds.includes(element.pollId)}
-                      checked={pollOptionIds.optionIds.includes(element.id)}
-                      onClick={() => {
-                        setPollOptionIds((prevState) => ({
-                          ...prevState,
-                          pollIds: [...prevState.pollIds, element.pollId],
-                          optionIds: [...prevState.optionIds, element.id],
-                        }));
-                        localStorage.setItem(
-                          "pollIds",
-                          JSON.stringify([
-                            ...pollOptionIds.pollIds,
-                            element.pollId,
-                          ])
-                        );
-                        localStorage.setItem(
-                          "optionIds",
-                          JSON.stringify([
-                            ...pollOptionIds.optionIds,
-                            element.id,
-                          ])
-                        );
-                        dispatch(voteCount({ optionId: element.id }));
-                      }}
-                      name={`group-${index}`}
-                      type="radio"
-                      value={element.optionTitle}
-                      className="single-poll-radio"
-                    />
-                    <div className="single-poll-vote-count">
-                      {element.voteCount.length} Votes
-                    </div>
-                  </div>
-                );
-              })}
+      {pollDetails.loading ? (
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-success" role="status">
+            <span class="sr-only"></span>
           </div>
         </div>
+      ) : (
+        pollDetails.singlePollDetails && (
+          <div className="single-poll-container">
+            <div className="single-poll-title">
+              {pollDetails.singlePollDetails.title}
+            </div>
+            <div className="single-poll-radio-container">
+              {pollDetails.singlePollDetails.optionList
+                .slice()
+                .reverse()
+                .map((element, index) => {
+                  return (
+                    <div className="single-poll-one-radio-container">
+                      <Form.Check
+                        key={element.id}
+                        label={element.optionTitle}
+                        disabled={pollOptionIds.pollIds.includes(
+                          element.pollId
+                        )}
+                        checked={pollOptionIds.optionIds.includes(element.id)}
+                        onClick={() => {
+                          selectRadio(element.pollId, element.id);
+                        }}
+                        name={`group-${index}`}
+                        type="radio"
+                        value={element.optionTitle}
+                        className="single-poll-radio"
+                      />
+                      <div className="single-poll-vote-count">
+                        {element.voteCount.length} Votes
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        )
       )}
     </div>
   );
