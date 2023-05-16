@@ -37,14 +37,40 @@ const PollList = () => {
   });
 
   useEffect(() => {
-    setPollOptionIds({
-      pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
-      optionIds: JSON.parse(localStorage.getItem("optionIds")) || [],
-    });
-  }, []);
-
-  useEffect(() => {
-    dispatch(pollList(pageNumberLimit));
+    let timeoutId;
+    const handleScroll = () => {
+      console.log("hii1");
+      clearTimeout(timeoutId);
+      setPageNumberLimit((prevState) => ({
+        ...prevState,
+        pageNumber: prevState.pageNumber + 1,
+      }));
+      timeoutId = setTimeout(() => {
+        dispatch(pollList(pageNumberLimit));
+      }, 300);
+    };
+    console.log("hii");
+    console.log(pollQuestion.pollList.length);
+    if(!pollQuestion.loading) {
+      console.log("yugfef")
+      dispatch(pollList(pageNumberLimit));
+    } 
+    if (
+      !(
+        pollQuestion.pollList.length % pageNumberLimit.limit <
+        pageNumberLimit.limit
+      ) ||
+      pollQuestion.pollList.length === 0
+    ){window.addEventListener("scroll", handleScroll);
+  }
+      setPollOptionIds({
+        pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
+        optionIds: JSON.parse(localStorage.getItem("optionIds")) || [],
+      });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -154,6 +180,20 @@ const PollList = () => {
           ))
         )}
       </div>
+      {/* <div class="show-more-poll-button-container">
+        <button
+          className="show-more-poll-button"
+          disabled={ pollQuestion.pollList.length<pageNumberLimit.limit || }
+          onClick={() =>
+            setPageNumberLimit((prevState) => ({
+              ...prevState,
+              pageNumber: prevState.pageNumber + 1,
+            }))
+          }
+        >
+          More
+        </button>
+      </div> */}
     </div>
   );
 };

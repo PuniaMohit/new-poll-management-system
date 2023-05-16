@@ -22,7 +22,7 @@ const pollListReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        pollList: action.payload,
+        pollList: [...state.pollList, ...action.payload],
         error: null,
       };
     case POLL_LIST_FAILURE:
