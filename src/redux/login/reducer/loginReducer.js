@@ -7,7 +7,7 @@ import {
 } from "../../constants";
 
 const initialState = {
-  userLogin: "",
+  user: "",
   loading: false,
   error: null,
 };
@@ -15,20 +15,20 @@ const initialState = {
 const LoginReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return { ...state, loading: true, userLogin: "", error: null };
+      return { ...state, loading: true, user: "", error: null };
     case LOGIN_SUCCESS:
       return {
         ...state,
         loading: false,
-        userLogin: action.payload,
+        user: action.payload,
         error: null,
       };
     case LOGIN_FAILURE:
-      return { ...state, loading: false, userLogin: "", error: action.payload };
+      return { ...state, loading: false, user: "", error: action.payload };
     case REMOVE_USER_DATA:
-      return { ...state, userLogin: "" };
+      return { ...state, user: "" };
     case USER_DETAILS_LOCAL_STORAGE:
-      return { ...state, userLogin: action.payload };
+      return { ...state, user: action.payload };
     default:
       return state;
   }

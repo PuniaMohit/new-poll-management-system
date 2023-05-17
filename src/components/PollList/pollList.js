@@ -17,8 +17,8 @@ import deletePoll, {
 } from "../../redux/delete/actions/deletePoll";
 
 const PollList = () => {
-  const pollQuestion = useSelector((state) => state.pollList);
-  const userDetails = useSelector((state) => state.login.userLogin);
+  const pollQuestions = useSelector((state) => state.pollList);
+  const user = useSelector((state) => state.login.user);
   const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
   const deletePollSuccessStatus = useSelector(
     (state) => state.deletePoll.status
@@ -99,7 +99,7 @@ const PollList = () => {
       />
       <div className="container">
         <div className="container-add-poll-button">
-          {userDetails && userDetails.user.roleId === 1 && (
+          {user && user.user.roleId === 1 && (
             <button
               className="show-add-poll-button"
               onClick={() => navigate("/addPoll")}
@@ -108,18 +108,18 @@ const PollList = () => {
             </button>
           )}
         </div>
-        {pollQuestion.loading ? (
+        {pollQuestions.loading ? (
           <div class="d-flex justify-content-center">
             <div class="spinner-border text-success" role="status">
               <span class="sr-only"></span>
             </div>
           </div>
         ) : (
-          pollQuestion.pollList.map(({ title, optionList, id }, index) => (
+          pollQuestions.pollList.map(({ title, optionList, id }, index) => (
             <div key={id}>
               <div className="title">
                 <div className="poll-title">{title}</div>
-                {userDetails.user.roleId === 1 && (
+                {user.user.roleId === 1 && (
                   <div className="edit-buttons">
                     <Button
                       className="btn-sm btn-light"
@@ -167,7 +167,7 @@ const PollList = () => {
                       value={element.optionTitle}
                       className="radio"
                     />
-                    {userDetails.user.roleId === 1 && (
+                    {user.user.roleId === 1 && (
                       <PencilSquare className="edit-button-radio" />
                     )}
                     <div className="vote-count">
