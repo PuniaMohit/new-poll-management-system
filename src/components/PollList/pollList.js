@@ -142,7 +142,14 @@ const PollList = () => {
                       className="radio"
                     />
                     {user.user.roleId === 1 && (
-                      <PencilSquare className="edit-button-radio" />
+                      <PencilSquare
+                        className="edit-button-radio"
+                        onClick={() =>
+                          navigate(
+                            `/updatePollOption/${element.optionTitle}/${element.id}`
+                          )
+                        }
+                      />
                     )}
                     <div className="vote-count">
                       {element.voteCount.length} Votes
