@@ -98,13 +98,10 @@ export const signInValidateForm = (event, formData, setFormErrors, dispatch, log
   setFormErrors(newFormErrors);
   };
 
-
-
-export const updateTitle=(setError,updatePollTitle,title, userId,pollId, dispatch)=>{
+export const validateStringLength = (setError, title) => {
     const regex = /^.{8,}$/;
     if (!regex.test(title)) {
       setError("Title must be at least 8 characters long");
       return;
     }
-    dispatch(updatePollTitle({ title: title, createdBy: userId }, pollId))
   }

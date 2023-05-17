@@ -6,7 +6,7 @@ import updatePollTitle, {
   emptyUpdatePollTitleDetailsSuccessStatus,
 } from "../../redux/updatePollTitle/actions/updatePollTitle";
 import "./updatePollTitle.css";
-import { updateTitle } from "../../utils/formValidate";
+import { validateStringLength } from "../../utils/formValidate";
 
 const UpdatePollTitle = () => {
   const { pollTitle, pollId } = useParams();
@@ -25,8 +25,8 @@ const UpdatePollTitle = () => {
   };
 
   const handleUpdate = () => {
-    const userId = user.user.id;
-    updateTitle(setError, updatePollTitle, title, userId, pollId, dispatch);
+    validateStringLength(setError, title,);
+    dispatch(updatePollTitle({ title: title, createdBy: user.user.id }, pollId))
   };
 
   useEffect(() => {
