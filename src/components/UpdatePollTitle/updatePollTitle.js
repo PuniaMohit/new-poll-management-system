@@ -25,8 +25,7 @@ const UpdatePollTitle = () => {
   };
 
   const handleUpdate = () => {
-    validateStringLength(setError, title,);
-    dispatch(updatePollTitle({ title: title, createdBy: user.user.id }, pollId))
+    validateStringLength(setError, title) &&  dispatch(updatePollTitle({ title: title, createdBy: user.user.id }, pollId))
   };
 
   useEffect(() => {
