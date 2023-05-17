@@ -23,8 +23,8 @@ const deletePoll = (id) => async (dispatch) => {
   }
 };
 
-export default deletePoll;
-
 export const emptyDeletePollSuccessStatus = () => (dispatch) => {
   dispatch({ type: EMPTY_DELETE_POLL_SUCCESS_STATUS })
 }
+
+export default deletePoll;

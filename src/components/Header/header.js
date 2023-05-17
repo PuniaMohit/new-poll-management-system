@@ -8,7 +8,6 @@ import AddPoll from "../AddPoll/addPoll";
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userDetails = useSelector((state) => state.login.userLogin);
   return (
     <Navbar className="navbar">
       <Container>

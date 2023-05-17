@@ -23,8 +23,8 @@ const updatePollTitle = (updatedTitle, id) => async (dispatch) => {
   }
 };
 
-export default updatePollTitle;
-
 export const emptyUpdatePollTitleDetailsSuccessStatus = () => (dispatch) => {
   dispatch({ type: EMPTY_UPDATE_POLL_TITLE_DETAILS_SUCCESS_STATUS })
 }
+
+export default updatePollTitle;
