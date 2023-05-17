@@ -6,6 +6,7 @@ import updatePollOptionAction, {
   emptyUpdatePollOptionDetailsSuccessStatus,
 } from "../../redux/updatePollOption/actions/updatePollOption";
 import "./updatePollOption.css";
+import { validationNotEmptyString } from "../../utils/formValidate";
 
 const UpdatePollOption = () => {
   const { option, optionId } = useParams();
@@ -20,12 +21,9 @@ const UpdatePollOption = () => {
     setError("");
   };
 
-  const updatePollOption = () => {
-    if (!editedOption.length) {
-      setError("Fill updated option");
-    } else {
+  const handleUpdatePollOption = () => {
+    validationNotEmptyString(editedOption, setError) &&
       dispatch(updatePollOptionAction({ optionTitle: editedOption }, optionId));
-    }
   };
 
   useEffect(() => {
@@ -52,7 +50,7 @@ const UpdatePollOption = () => {
       <button
         className="cursor-pointer update-poll-option-button"
         variant="primary"
-        onClick={updatePollOption}
+        onClick={handleUpdatePollOption}
       >
         {updatPollOptionDetails.loading ? "Loading..." : "Update"}
       </button>
