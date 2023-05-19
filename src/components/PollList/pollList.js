@@ -7,16 +7,22 @@ import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddPoll/addPoll";
-import voteCount from "../../redux/voteCount/actions/votecount";
+import voteCount, {
+  emptyVoteCountSuccessStatus,
+} from "../../redux/voteCount/actions/votecount";
 import SuccessMessage from "../../utils/successMessage/successMessage";
 import { optionVoteCount } from "../../utils/voteCountUtils";
-import deletePoll from "../../redux/delete/actions/deletePoll";
+import deletePoll, {
+  emptyDeletePollSuccessStatus,
+} from "../../redux/delete/actions/deletePoll";
 
 const PollList = () => {
   const pollQuestions = useSelector((state) => state.pollList);
   const user = useSelector((state) => state.login.user);
   const voteCountSuccess = useSelector((state) => state.voteCount.data);
-  const deletePollSuccess = useSelector((state) => state.deletePoll.data);
+  const deletePollSuccess = useSelector(
+    (state) => state.deletePoll.data
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
@@ -46,10 +52,12 @@ const PollList = () => {
       setShowVoteCountSuccessMessage(true);
       dispatch(pollList(pageNumberLimit));
     }
+    dispatch(emptyVoteCountSuccessStatus());
   }, [voteCountSuccess]);
 
   useEffect(() => {
     deletePollSuccess && dispatch(pollList(pageNumberLimit));
+    dispatch(emptyDeletePollSuccessStatus());
   }, [deletePollSuccess]);
 
   const optionClickVoteCount = (pollID, optionId) => {
