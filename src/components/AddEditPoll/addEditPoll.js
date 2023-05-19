@@ -94,7 +94,7 @@ const AddEditPoll = () => {
   };
 
   const handleAddPoll = () => {
-    addNewPoll(formValues, setFormErrors, pollOptionInput, navigate);
+    addNewPoll(formValues, setFormErrors, pollOptionInput, navigate, mode, dispatch, addPoll);
   };
 
   const handleBlurTitle = (event) => {
@@ -121,34 +121,31 @@ const AddEditPoll = () => {
 
   };
   const handleBlurOption = (event) => {
-    if (addPollAPI) {
-         if (pollOptionInput === "" && formValues.pollOptions.length < 3) {
-        setFormErrors((prevErrors) => ({
-          ...prevErrors,
-          optionError: "Enter at least three options",
-        }));
-      } else if (formValues.pollOptions.length < 3) {
-        setFormErrors((prevErrors) => ({
-          ...prevErrors,
-          optionError: "Enter at least three options",
-        }));
-      }
-      if (formValues.pollOptions.length >= 3) {
-        const newPoll = {
-          title: formValues.pollTitle,
-          options: [...formValues.pollOptions, {optionTitle: event.target.value}],
-        };
-        dispatch(addPoll(newPoll));
-      }
-    } else {
-      event.target.value !==
-        formValues.pollOptions[editPollOptionIndex].optionTitle &&
-        dispatch(
-          updatePollOptionAction(
-            { optionTitle: pollOptionInput },
-            pollDetails.optionList[editPollOptionIndex].id
-          )
-        );
+    console.log(event.target.value)
+    // if (addPollAPI) {
+      console.log(event.target.value)
+
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        optionError: "Only Edit not add poll",
+      }));
+    // }
+    // else {
+      // setAddPollAPI(false)
+      // setFormErrors((prevErrors) => ({
+      //   ...prevErrors,
+      //   optionError: "Only Edit not add poll",
+      // }));
+      console.log(event.target.value)
+      if (event.target.value) {
+        event.target.value !== formValues.pollOptions[editPollOptionIndex].optionTitle &&
+          dispatch(
+            updatePollOptionAction(
+              { optionTitle: pollOptionInput },
+              pollDetails.optionList[editPollOptionIndex].id
+            )
+          );
+      // }
     }
 
   };
@@ -252,7 +249,7 @@ const AddEditPoll = () => {
             ))}
             <div className="add-poll-container">
               <button className=" add-poll-button" onClick={handleAddPoll}>
-                Add New Poll
+                {mode === "edit" ? "UPDATE" : "Add Poll"}
               </button>
             </div>
           </div>

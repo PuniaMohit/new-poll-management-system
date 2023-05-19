@@ -40,7 +40,10 @@ export const addNewPoll = (
   formValues,
   setFormErrors,
   pollOptionInput,
-  navigate
+  navigate,
+  mode,
+  dispatch,
+  addPoll
 ) => {
   const titleRegex = /^.{8,}$/;
   if (formValues.pollTitle.trim() === "") {
@@ -66,6 +69,10 @@ export const addNewPoll = (
     }));
   }
   if (formValues.pollOptions.length >= 3) {
-    navigate("/pollList");
+    const newPoll = {
+      title: formValues.pollTitle,
+      options: formValues.pollOptions,
+    };
+    mode==="edit"?navigate("/pollList"):dispatch(addPoll(newPoll));
   }
 };
