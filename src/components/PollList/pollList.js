@@ -19,9 +19,9 @@ import deletePoll, {
 const PollList = () => {
   const pollQuestions = useSelector((state) => state.pollList);
   const user = useSelector((state) => state.login.user);
-  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
-  const deletePollSuccessStatus = useSelector(
-    (state) => state.deletePoll.status
+  const voteCountSuccess = useSelector((state) => state.voteCount.data);
+  const deletePollSuccess = useSelector(
+    (state) => state.deletePoll.data
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,17 +48,17 @@ const PollList = () => {
   }, []);
 
   useEffect(() => {
-    if (voteCountSuccessStatus === 200) {
+    if (voteCountSuccess) {
       setShowVoteCountSuccessMessage(true);
       dispatch(pollList(pageNumberLimit));
     }
     dispatch(emptyVoteCountSuccessStatus());
-  }, [voteCountSuccessStatus]);
+  }, [voteCountSuccess]);
 
   useEffect(() => {
-    deletePollSuccessStatus === 200 && dispatch(pollList(pageNumberLimit));
+    deletePollSuccess && dispatch(pollList(pageNumberLimit));
     dispatch(emptyDeletePollSuccessStatus());
-  }, [deletePollSuccessStatus]);
+  }, [deletePollSuccess]);
 
   const optionClickVoteCount = (pollID, optionId) => {
     optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);

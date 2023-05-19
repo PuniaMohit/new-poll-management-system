@@ -6,7 +6,7 @@ import {
 } from "../../constants";
 
 const initialState = {
-    status: "",
+    data: "",
     loading: false,
     error: null,
 };
@@ -14,13 +14,13 @@ const initialState = {
 const voteCountReducer = (state = initialState, action) => {
     switch (action.type) {
         case VOTE_COUNT_REQUEST:
-            return { ...state, loading: true, status: "" };
+            return { ...state, loading: true, data: "" };
         case VOTE_COUNT_SUCCESS:
-            return { ...state, loading: false, status: action.payload.status };
+            return { ...state, loading: false, data: action.payload.data };
         case VOTE_COUNT_FAILURE:
-            return { ...state, loading: false, error: action.payload, status: action.payload.status };
+            return { ...state, loading: false, };
         case EMPTY_VOTE_COUNT_SUCCESS_STATUS:
-            return { status: "" }
+            return { data: "" }
         default:
             return state;
     }

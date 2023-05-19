@@ -6,19 +6,19 @@ import {
 } from "../../constants";
 
 const initialState = {
-    status: "",
+    data: "",
 };
 
 const deletePollReducer = (state = initialState, action) => {
     switch (action.type) {
         case DELETE_POLL_REQUEST:
-            return { ...state, status: "" };
+            return { ...state, data: "" };
         case DELETE_POLL_SUCCESS:
-            return { ...state, status: action.payload.status };
+            return { ...state, data: action.payload.data };
         case DELETE_POLL_FAILURE:
-            return { ...state, status: action.payload.status };
+            return { ...state, data: "" };
         case EMPTY_DELETE_POLL_SUCCESS_STATUS:
-            return { status: "" }
+            return { data: "" }
         default:
             return state;
     }

@@ -11,7 +11,7 @@ import { addNewPoll } from "../../utils/addPollValidation";
 import Header from "../Header/header";
 
 const AddPoll = () => {
-  const statusAddPoll = useSelector((state) => state.addPoll.status);
+  const AddPollSuccess = useSelector((state) => state.addPoll.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
@@ -70,11 +70,11 @@ const AddPoll = () => {
   };
 
   useEffect(() => {
-    if (statusAddPoll === 200) {
+    if (AddPollSuccess) {
       navigate("/pollList")
       dispatch(removeStatusAddPoll())
     }
-  }, [statusAddPoll])
+  }, [AddPollSuccess])
 
   return (
     <div><Header />

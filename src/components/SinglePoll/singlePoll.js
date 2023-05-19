@@ -6,13 +6,12 @@ import "./singlePoll.css";
 import singlePoll from "../../redux/singlePoll/actions/singlePoll";
 import voteCount from "../../redux/voteCount/actions/votecount";
 import Header from "../Header/header";
-import { emptyVoteCountSuccessStatus } from "../../redux/voteCount/actions/votecount";
 import BackArrow from "../../utils/BackArrow/backArrow";
 import { singlePollVoteCount } from "../../utils/singlePollUtils";
 
 const SinglePollPage = () => {
   const pollDetails = useSelector((state) => state.singlePoll);
-  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
+  const voteCountSuccess = useSelector((state) => state.voteCount.data);
   const [pollOptionIds, setPollOptionIds] = useState({
     pollIds: [],
     optionIds: [],
@@ -39,9 +38,8 @@ const SinglePollPage = () => {
   }, []);
 
   useEffect(() => {
-    voteCountSuccessStatus === 200 && dispatch(singlePoll(pollId));
-    dispatch(emptyVoteCountSuccessStatus());
-  }, [voteCountSuccessStatus]);
+    voteCountSuccess && dispatch(singlePoll(pollId));
+  }, [voteCountSuccess]);
 
   return (
     <div>
