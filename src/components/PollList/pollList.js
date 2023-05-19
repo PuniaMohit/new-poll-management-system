@@ -7,22 +7,16 @@ import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddPoll/addPoll";
-import voteCount, {
-  emptyVoteCountSuccessStatus,
-} from "../../redux/voteCount/actions/votecount";
+import voteCount from "../../redux/voteCount/actions/votecount";
 import SuccessMessage from "../../utils/successMessage/successMessage";
 import { optionVoteCount } from "../../utils/voteCountUtils";
-import deletePoll, {
-  emptyDeletePollSuccessStatus,
-} from "../../redux/delete/actions/deletePoll";
+import deletePoll from "../../redux/delete/actions/deletePoll";
 
 const PollList = () => {
   const pollQuestions = useSelector((state) => state.pollList);
   const user = useSelector((state) => state.login.user);
-  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
-  const deletePollSuccessStatus = useSelector(
-    (state) => state.deletePoll.status
-  );
+  const voteCountSuccess = useSelector((state) => state.voteCount.data);
+  const deletePollSuccess = useSelector((state) => state.deletePoll.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
@@ -48,17 +42,15 @@ const PollList = () => {
   }, []);
 
   useEffect(() => {
-    if (voteCountSuccessStatus === 200) {
+    if (voteCountSuccess) {
       setShowVoteCountSuccessMessage(true);
       dispatch(pollList(pageNumberLimit));
     }
-    dispatch(emptyVoteCountSuccessStatus());
-  }, [voteCountSuccessStatus]);
+  }, [voteCountSuccess]);
 
   useEffect(() => {
-    deletePollSuccessStatus === 200 && dispatch(pollList(pageNumberLimit));
-    dispatch(emptyDeletePollSuccessStatus());
-  }, [deletePollSuccessStatus]);
+    deletePollSuccess && dispatch(pollList(pageNumberLimit));
+  }, [deletePollSuccess]);
 
   const optionClickVoteCount = (pollID, optionId) => {
     optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
