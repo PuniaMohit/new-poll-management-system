@@ -1,0 +1,20 @@
+.update-poll-option-container {
+    margin: 5% auto;
+    width: 40%;
+    text-align: center;
+}
+
+.update-poll-option-button {
+    width: 50%;
+    background-color: #04aa6d;
+    border: none;
+    border-radius: 5px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    color: white;
+}
+
+.update-poll-option-button:active {
+    background-color: #035638;
+
+}
