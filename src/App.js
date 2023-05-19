@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import LoginPage from "./components/Login/login";
 import SignUpPage from "./components/Signup/signUp";
 import PollList from "./components/PollList/pollList";
-import AddPoll from "./components/AddPoll/addPoll";
+import AddEditPoll from "./components/AddEditPoll/addEditPoll";
 import { userDetailsFromLocalStorage } from "./redux/login/actions/login";
 import UpdatePollTitle from "./components/UpdatePollTitle/updatePollTitle";
 import SinglePollPage from "./components/SinglePoll/singlePoll";
@@ -26,7 +26,10 @@ function App() {
     <Routes>
       <Route exact path="/" element={<LoginPage />} />
       <Route exact path="/pollList" element={<PollList />} />
-      <Route exact path="/addPoll" element={<AddPoll />} />
+      <Route
+        path="/poll/:mode/:pollId"
+        element={<AddEditPoll />}
+      />
       <Route exact path="/updatePollTitle/:pollTitle/:pollId" element={<UpdatePollTitle />} />
       <Route exact path="/singlePoll/:pollId" element={<SinglePollPage />} />
       <Route exact path="/signup" element={<SignUpPage />} />

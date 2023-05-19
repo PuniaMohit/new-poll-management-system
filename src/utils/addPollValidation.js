@@ -10,8 +10,13 @@ export const addPollOption = (
   if (pollOptionInput.trim() !== "") {
     if (editPollOptionIndex !== -1) {
       const updatedPollOptions = [...formValues.pollOptions];
-      updatedPollOptions[editPollOptionIndex] = { optionTitle: pollOptionInput };
-      setFormValues((prevValues) => ({ ...prevValues, pollOptions: updatedPollOptions }));
+      updatedPollOptions[editPollOptionIndex] = {
+        optionTitle: pollOptionInput,
+      };
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        pollOptions: updatedPollOptions,
+      }));
       setEditPollOptionIndex(-1);
     } else {
       setFormValues((prevValues) => ({
@@ -34,9 +39,8 @@ export const addPollOption = (
 export const addNewPoll = (
   formValues,
   setFormErrors,
-  addPoll,
   pollOptionInput,
-  dispatch
+  navigate
 ) => {
   const titleRegex = /^.{8,}$/;
   if (formValues.pollTitle.trim() === "") {
@@ -62,10 +66,6 @@ export const addNewPoll = (
     }));
   }
   if (formValues.pollOptions.length >= 3) {
-    const newPoll = {
-      title: formValues.pollTitle,
-      options: formValues.pollOptions,
-    };
-    dispatch(addPoll(newPoll));
+    navigate("/pollList");
   }
 };
