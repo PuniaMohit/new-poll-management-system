@@ -7,10 +7,13 @@ import {
   addPoll,
   removeStatusAddPoll,
 } from "../../redux/addPoll/actions/addPoll";
-import pollList from "../../redux/pollList/actions/pollList";
 import "./addPoll.css";
-import { addPollOption } from "../../utils/addPollValidation";
-import { addNewPoll } from "../../utils/addPollValidation";
+import {
+  addNewPoll,
+  addPollOption,
+  blurOption,
+  blurTitle,
+} from "../../utils/addPollValidation";
 import Header from "../Header/header";
 import singlePoll from "../../redux/singlePoll/actions/singlePoll";
 import updatePollTitle, {
@@ -29,7 +32,9 @@ const AddEditPoll = () => {
   const pollDetails = useSelector((state) => state.singlePoll);
   const user = useSelector((state) => state.login.user);
   const AddPollSuccess = useSelector((state) => state.addPoll.data);
-  const updatPollOptionDetails = useSelector((state) => state.updatePollOption.data);
+  const updatPollOptionDetails = useSelector(
+    (state) => state.updatePollOption.data
+  );
   const { mode, pollId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,8 +53,6 @@ const AddEditPoll = () => {
     titleError: "",
     optionError: "",
   });
-  const [addPollAPI, setAddPollAPI] = useState(false)
-
   const handlePollTitle = (event) => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -59,102 +62,103 @@ const AddEditPoll = () => {
   };
 
   const handlePollOption = (event) => {
-    if (event.target.value.length <= 2) {
-      setAddPollAPI(true)
-    }
     setPollOptionInput(event.target.value);
     setFormErrors((prevErrors) => ({ ...prevErrors, optionError: "" }));
+    if (mode === "edit") {
+      if (editPollOptionIndex === -1) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          optionError: "Only Edit",
+        }));
+      }
+    }
   };
 
   const handleAddPollOption = () => {
-    addPollOption(
-      pollOptionInput,
-      formValues,
-      setFormErrors,
-      setFormValues,
-      setPollOptionInput,
-      editPollOptionIndex,
-      setEditPollOptionIndex
-    );
+    if (mode === "add") {
+      addPollOption(
+        pollOptionInput,
+        formValues,
+        setFormErrors,
+        setFormValues,
+        setPollOptionInput,
+        editPollOptionIndex,
+        setEditPollOptionIndex
+      );
+    }
   };
 
   const editPollOption = (index) => {
     setPollOptionInput(formValues.pollOptions[index].optionTitle);
     setEditPollOptionIndex(index);
+    setFormErrors((prevErrors) => ({ ...prevErrors, optionError: "" }));
   };
-
   const deletePollOption = (index) => {
-    const updatedPollOptions = formValues.pollOptions.filter(
-      (_, optionIndex) => optionIndex !== index
-    );
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      pollOptions: updatedPollOptions,
-    }));
+    if (mode === "add") {
+      const updatedPollOptions = formValues.pollOptions.filter(
+        (_, optionIndex) => optionIndex !== index
+      );
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        pollOptions: updatedPollOptions,
+      }));
+    }
   };
 
   const handleAddPoll = () => {
-    addNewPoll(formValues, setFormErrors, pollOptionInput, navigate, mode, dispatch, addPoll);
+    if (mode === "add") {
+      addNewPoll(
+        formValues,
+        setFormErrors,
+        pollOptionInput,
+        navigate,
+        dispatch,
+        addPoll
+      );
+    } else {
+      navigate("/pollList");
+    }
   };
 
   const handleBlurTitle = (event) => {
-    const titleRegex = /^.{8,}$/;
-    if (formValues.pollTitle.trim() === "") {
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        titleError: "Enter poll title",
-      }));
-    } else if (!titleRegex.test(formValues.pollTitle.trim())) {
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        titleError: "Title should be of minimum 8 characters",
-      }));
-    } else {
-      event.target.value !== pollDetails.title &&
-        dispatch(
-          updatePollTitle(
-            { title: formValues.pollTitle, createdBy: user.user.id },
-            pollId
-          )
-        );
+    if (mode === "edit") {
+      blurTitle(
+        event,
+        formValues,
+        setFormErrors,
+        dispatch,
+        updatePollTitle,
+        user,
+        pollId,
+        pollDetails
+      );
     }
-
   };
   const handleBlurOption = (event) => {
-    console.log(event.target.value)
-    // if (addPollAPI) {
-      console.log(event.target.value)
-
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        optionError: "Only Edit not add poll",
-      }));
-    // }
-    // else {
-      // setAddPollAPI(false)
-      // setFormErrors((prevErrors) => ({
-      //   ...prevErrors,
-      //   optionError: "Only Edit not add poll",
-      // }));
-      console.log(event.target.value)
-      if (event.target.value) {
-        event.target.value !== formValues.pollOptions[editPollOptionIndex].optionTitle &&
-          dispatch(
-            updatePollOptionAction(
-              { optionTitle: pollOptionInput },
-              pollDetails.optionList[editPollOptionIndex].id
-            )
-          );
-      // }
+    if (mode === "edit") {
+      blurOption(
+        event,
+        formErrors,
+        formValues,
+        dispatch,
+        updatePollOptionAction,
+        setPollOptionInput,
+        pollOptionInput,
+        pollDetails,
+        editPollOptionIndex,
+        setFormErrors,
+      );
     }
-
   };
   useEffect(() => {
-    updatPollOptionDetails && setShowSuccessMessage({
-      show: true,
-      titleMesasge: "Option Successfully Updated",
-    });
+    updatPollOptionDetails &&
+      setShowSuccessMessage({
+        show: true,
+        titleMesasge: "Option Successfully Updated",
+      });
     dispatch(emptyUpdatePollOptionDetailsSuccessStatus());
+    setEditPollOptionIndex(-1);
+    dispatch(singlePoll(pollId));
   }, [updatPollOptionDetails]);
 
   useEffect(() => {
@@ -164,6 +168,7 @@ const AddEditPoll = () => {
         titleMesasge: "Title Successfully Updated",
       });
     dispatch(emptyUpdatePollTitleDetailsSuccessStatus());
+    dispatch(singlePoll(pollId));
   }, [updatPollTitleDetails]);
 
   useEffect(() => {
@@ -178,16 +183,14 @@ const AddEditPoll = () => {
   }, [AddPollSuccess]);
 
   useEffect(() => {
-    if (pollId) {
-      setFormValues({
-        pollTitle: pollDetails.title || "",
-        pollOptions: Array.isArray(pollDetails.optionList)
-          ? pollDetails.optionList.map((element) => ({
+    setFormValues({
+      pollTitle: pollDetails.title || "",
+      pollOptions: Array.isArray(pollDetails.optionList)
+        ? pollDetails.optionList.map((element) => ({
             optionTitle: element.optionTitle,
           }))
-          : [],
-      });
-    }
+        : [],
+    });
   }, [pollDetails]);
 
   return (
