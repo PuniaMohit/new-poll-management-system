@@ -9,6 +9,7 @@ import deletePollReducer from "./delete/reducers/deletePollReducer";
 import updatePollTitleReducer from "./updatePollTitle/reducer/updatePollTitleReducer";
 import singlePollReducer from "./singlePoll/reducer/singlePollReducer";
 import updatePollOptionReducer from "./updatePollOption/reducer/updatePollOptionReducer";
+import deletePollOptionReducer from "./deletePollOption/reducer/deletePollOptionReducer";
 
 
 const reducers = combineReducers({
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   updatePollTitleDetails: updatePollTitleReducer,
   singlePoll: singlePollReducer,
   updatePollOption: updatePollOptionReducer,
+  deletePollOption: deletePollOptionReducer,
 
 });
 

@@ -24,12 +24,19 @@ import updatePollOptionAction, {
   emptyUpdatePollOptionDetailsSuccessStatus,
 } from "../../redux/updatePollOption/actions/updatePollOption";
 import BackArrow from "../../utils/BackArrow/backArrow";
+import {
+  deletePollOptionAction,
+  emptyDeletePollOptionDetailsSuccessStatus,
+} from "../../redux/deletePollOption/actions/deletePollOption";
 
 const AddEditPoll = () => {
   const updatPollTitleDetails = useSelector(
     (state) => state.updatePollTitleDetails.data
   );
   const pollDetails = useSelector((state) => state.singlePoll);
+  const deletePollOptionDetails = useSelector(
+    (state) => state.deletePollOption.data
+  );
   const user = useSelector((state) => state.login.user);
   const AddPollSuccess = useSelector((state) => state.addPoll.data);
   const updatPollOptionDetails = useSelector(
@@ -93,7 +100,7 @@ const AddEditPoll = () => {
     setEditPollOptionIndex(index);
     setFormErrors((prevErrors) => ({ ...prevErrors, optionError: "" }));
   };
-  const deletePollOption = (index) => {
+  const deletePollOption = (index, optionId) => {
     if (mode === "add") {
       const updatedPollOptions = formValues.pollOptions.filter(
         (_, optionIndex) => optionIndex !== index
@@ -102,6 +109,11 @@ const AddEditPoll = () => {
         ...prevValues,
         pollOptions: updatedPollOptions,
       }));
+    } else {
+      if (formValues.pollOptions.length > 3) {
+        dispatch(deletePollOptionAction(optionId));
+      } else {
+      }
     }
   };
 
@@ -146,7 +158,7 @@ const AddEditPoll = () => {
         pollOptionInput,
         pollDetails,
         editPollOptionIndex,
-        setFormErrors,
+        setFormErrors
       );
     }
   };
@@ -160,6 +172,16 @@ const AddEditPoll = () => {
     setEditPollOptionIndex(-1);
     dispatch(singlePoll(pollId));
   }, [updatPollOptionDetails]);
+
+  useEffect(() => {
+    deletePollOptionDetails &&
+      setShowSuccessMessage({
+        show: true,
+        titleMesasge: "Option Successfully Deleted",
+      });
+    dispatch(emptyDeletePollOptionDetailsSuccessStatus());
+    dispatch(singlePoll(pollId));
+  }, [deletePollOptionDetails]);
 
   useEffect(() => {
     updatPollTitleDetails &&
@@ -188,6 +210,7 @@ const AddEditPoll = () => {
       pollOptions: Array.isArray(pollDetails.optionList)
         ? pollDetails.optionList.map((element) => ({
             optionTitle: element.optionTitle,
+            optionId: element.id,
           }))
         : [],
     });
@@ -243,7 +266,7 @@ const AddEditPoll = () => {
                   </div>
                   <div
                     className="delete-button"
-                    onClick={() => deletePollOption(index)}
+                    onClick={() => deletePollOption(index, option.optionId)}
                   >
                     <Trash />
                   </div>
