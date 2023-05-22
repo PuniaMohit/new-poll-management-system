@@ -6,22 +6,20 @@ import {
 } from "../../constants";
 
 const initialState = {
-  pollAdded: "",
-  status: "",
+  data: "",
   loading: false,
-  error: null,
 };
 
 const addPollReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POLL_REQUEST:
-      return { ...state, loading: true, status: "" };
+      return { ...state, loading: true, data: "" };
     case ADD_POLL_SUCCESS:
-      return { ...state, loading: false, pollAdded: action.payload.data.poll.title, status: action.payload.status };
+      return { ...state, loading: false, data: action.payload.data };
     case ADD_POLL_FAILURE:
-      return { ...state, loading: false, error: action.payload, status: action.payload.status };
+      return { ...state, loading: false, error: action.payload, data: "" };
     case REMOVE_STATUS_ADD_POLL:
-      return { ...state, status: "" }
+      return { ...state, data: "" }
     default:
       return state;
   }

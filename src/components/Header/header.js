@@ -3,7 +3,6 @@ import { removeUserData } from "../../redux/login/actions/login";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AddPoll from "../AddPoll/addPoll";
 
 const Header = () => {
   const dispatch = useDispatch();

@@ -11,10 +11,7 @@ export const addPoll = (userData) => async (dispatch) => {
   try {
     dispatch({ type: ADD_POLL_REQUEST });
     const data = await api.post("/poll/add", userData);
-    dispatch({
-      type: ADD_POLL_SUCCESS,
-      payload: data,
-    });
+    data.status===200 && dispatch({type: ADD_POLL_SUCCESS,payload: data});
   } catch (error) {
     dispatch({
       type: ADD_POLL_FAILURE,

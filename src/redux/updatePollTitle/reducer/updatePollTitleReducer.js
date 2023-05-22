@@ -6,20 +6,20 @@ import {
 } from "../../constants";
 
 const initialState = {
-  status: "",
+  data: "",
   loading: false,
 };
 
 const updatePollTitleReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_POLL_TITLE_REQUEST:
-      return { ...state, status: "", loading: true };
+      return { ...state, data: "", loading: true };
     case UPDATE_POLL_TITLE_SUCCESS:
-      return { ...state, status: action.payload.status, loading: false };
+      return { ...state, data: action.payload.data, loading: false };
     case UPDATE_POLL_TITLE_FAILURE:
-      return { ...state, status: action.payload.status, loading: false };
+      return { ...state, data: action.payload.data, loading: false };
     case EMPTY_UPDATE_POLL_TITLE_DETAILS_SUCCESS_STATUS:
-      return { ...state, status: "" }
+      return { ...state, data: "" }
     default:
       return state;
   }

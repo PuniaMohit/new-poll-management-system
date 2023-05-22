@@ -11,10 +11,7 @@ const deletePoll = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_POLL_REQUEST });
     const data = await api.delete(`/poll/${id}`);
-    dispatch({
-      type: DELETE_POLL_SUCCESS,
-      payload: data,
-    });
+    data.status===200 && dispatch({type: DELETE_POLL_SUCCESS,payload: data,});
   } catch (error) {
     dispatch({
       type: DELETE_POLL_FAILURE,

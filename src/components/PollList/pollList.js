@@ -6,7 +6,7 @@ import { Button, Form } from "react-bootstrap";
 import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
 import pollList from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
-import AddPoll from "../AddPoll/addPoll";
+import AddPoll from "../AddEditPoll/addEditPoll";
 import voteCount, {
   emptyVoteCountSuccessStatus,
 } from "../../redux/voteCount/actions/votecount";
@@ -15,13 +15,14 @@ import { optionVoteCount } from "../../utils/voteCountUtils";
 import deletePoll, {
   emptyDeletePollSuccessStatus,
 } from "../../redux/delete/actions/deletePoll";
+import singlePoll from "../../redux/singlePoll/actions/singlePoll";
 
 const PollList = () => {
   const pollQuestions = useSelector((state) => state.pollList);
   const user = useSelector((state) => state.login.user);
-  const voteCountSuccessStatus = useSelector((state) => state.voteCount.status);
-  const deletePollSuccessStatus = useSelector(
-    (state) => state.deletePoll.status
+  const voteCountSuccess = useSelector((state) => state.voteCount.data);
+  const deletePollSuccess = useSelector(
+    (state) => state.deletePoll.data
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,17 +75,17 @@ const PollList = () => {
   }, []);
 
   useEffect(() => {
-    if (voteCountSuccessStatus === 200) {
+    if (voteCountSuccess) {
       setShowVoteCountSuccessMessage(true);
       dispatch(pollList(pageNumberLimit));
     }
     dispatch(emptyVoteCountSuccessStatus());
-  }, [voteCountSuccessStatus]);
+  }, [voteCountSuccess]);
 
   useEffect(() => {
-    deletePollSuccessStatus === 200 && dispatch(pollList(pageNumberLimit));
+    deletePollSuccess && dispatch(pollList(pageNumberLimit));
     dispatch(emptyDeletePollSuccessStatus());
-  }, [deletePollSuccessStatus]);
+  }, [deletePollSuccess]);
 
   const optionClickVoteCount = (pollID, optionId) => {
     optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
@@ -96,13 +97,14 @@ const PollList = () => {
       <SuccessMessage
         show={showVoteCountSuccessMessage}
         setShow={setShowVoteCountSuccessMessage}
+        message="Vote Given Successfully"
       />
       <div className="container">
         <div className="container-add-poll-button">
           {user && user.user.roleId === 1 && (
             <button
               className="show-add-poll-button"
-              onClick={() => navigate("/addPoll")}
+              onClick={() => navigate(`/poll/add/""`)}
             >
               Add Poll
             </button>
@@ -130,7 +132,8 @@ const PollList = () => {
                     <Button
                       className="btn-sm btn-light edit-button-pencil-square"
                       onClick={() => {
-                        navigate(`/updatePollTitle/${title}/${id}`);
+                        navigate(`/poll/edit/${id}`);
+                        dispatch(singlePoll(id));
                       }}
                     >
                       <PencilSquare />
@@ -167,9 +170,6 @@ const PollList = () => {
                       value={element.optionTitle}
                       className="radio"
                     />
-                    {user.user.roleId === 1 && (
-                      <PencilSquare className="edit-button-radio" />
-                    )}
                     <div className="vote-count">
                       {element.voteCount.length} Votes
                     </div>
