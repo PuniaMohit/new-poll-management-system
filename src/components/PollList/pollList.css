@@ -110,3 +110,10 @@
 .show-more-poll-button-container{
     text-align: center;
 }
+.show-more-disabled-button{
+    background-color: gray;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5% 2%;
+    color: white;
+}

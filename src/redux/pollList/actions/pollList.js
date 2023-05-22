@@ -2,6 +2,7 @@ import {
   POLL_LIST_REQUEST,
   POLL_LIST_SUCCESS,
   POLL_LIST_FAILURE,
+  EMPTY_POLL_LIST
 } from "../../constants";
 import api from "../../../utils/apiToken";
 
@@ -23,4 +24,10 @@ const pollList = (pageNumberLimit) => async (dispatch) => {
   }
 };
 
+export const emptyPollList=()=>(dispatch)=>{
+  console.log("hello")
+  dispatch({ type: EMPTY_POLL_LIST })
+}
+
 export default pollList;
+
