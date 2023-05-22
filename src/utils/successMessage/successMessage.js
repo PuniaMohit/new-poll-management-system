@@ -5,13 +5,13 @@ import './successMessage.css';
 
 
 function SuccessMessage(props) {
-    const { show, setShow } = props
+    const { show, setShow, message } = props
     const handleClose = () => setShow(false);
     return (
         <div>
             <Modal show={show} onHide={handleClose} className="modal-green">
                 <Modal.Header className="modal-header-green">
-                    <Modal.Title className="modal-title-green mx-auto">Vote Successfully Given</Modal.Title>
+                    <Modal.Title className="modal-title-green mx-auto">{message}</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer className="modal-footer-green">
                     <Button variant="secondary" className="mx-auto" onClick={() => setShow(false)}>
