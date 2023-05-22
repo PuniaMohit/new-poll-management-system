@@ -6,7 +6,6 @@ import SignUpPage from "./components/Signup/signUp";
 import PollList from "./components/PollList/pollList";
 import AddEditPoll from "./components/AddEditPoll/addEditPoll";
 import { userDetailsFromLocalStorage } from "./redux/login/actions/login";
-import UpdatePollTitle from "./components/UpdatePollTitle/updatePollTitle";
 import SinglePollPage from "./components/SinglePoll/singlePoll";
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
         path="/poll/:mode/:pollId"
         element={<AddEditPoll />}
       />
-      <Route exact path="/updatePollTitle/:pollTitle/:pollId" element={<UpdatePollTitle />} />
       <Route exact path="/singlePoll/:pollId" element={<SinglePollPage />} />
       <Route exact path="/signup" element={<SignUpPage />} />
     </Routes>
