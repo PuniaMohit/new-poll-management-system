@@ -23,8 +23,8 @@ import "./pollList.css";
 const PollList = () => {
   const pollQuestions = useSelector((state) => state.pollList.pollList);
   const loading = useSelector((state) => state.pollList.loading);
-  const pollListArrayToCheck = useSelector(
-    (state) => state.pollList.pollListForChecking
+  const addedDataArrayLength = useSelector(
+    (state) => state.pollList.addedDataArrayLength
   );
   const user = useSelector((state) => state.login.user);
   const voteCountSuccess = useSelector((state) => state.voteCount.data);
@@ -46,9 +46,6 @@ const PollList = () => {
     optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
   };
 
-  let pollQuestionsLessThanLimit =
-    pollQuestions.length % pageNumberLimit.limit > pageNumberLimit.limit;
-
   useEffect(() => {
     dispatch(pollList(pageNumberLimit));
     setPollOptionIds({
@@ -56,15 +53,6 @@ const PollList = () => {
       optionIds: JSON.parse(localStorage.getItem("optionIds")) || [],
     });
   }, [pageNumberLimit]);
-
-  useEffect(() => {
-    dispatch(
-      pollListSecondCall({
-        pageNumber: pageNumberLimit.pageNumber + 1,
-        limit: 4,
-      })
-    );
-  }, [pollQuestions]);
 
   useEffect(() => {
     if (voteCountSuccess) {
@@ -178,13 +166,11 @@ const PollList = () => {
         <div class="show-more-poll-button-container">
           <button
             className={
-              pollQuestionsLessThanLimit || !pollListArrayToCheck.length
+              addedDataArrayLength < 4
                 ? "show-more-disabled-button"
                 : "show-more-poll-button"
             }
-            disabled={
-              pollQuestionsLessThanLimit || !pollListArrayToCheck.length
-            }
+            disabled={addedDataArrayLength < 4}
             onClick={() => {
               setPageNumberLimit((prevState) => ({
                 ...prevState,

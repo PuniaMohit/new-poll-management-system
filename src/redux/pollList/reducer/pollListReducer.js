@@ -3,13 +3,11 @@ import {
   POLL_LIST_SUCCESS,
   POLL_LIST_FAILURE,
   EMPTY_POLL_LIST,
-  POLL_LIST_SECOND_CALL,
 } from "../../constants";
 
 const initialState = {
-  status: "",
   pollList: "",
-  pollListForChecking: [],
+  addedDataArrayLength: "",
   loading: false,
   error: null,
 };
@@ -26,8 +24,8 @@ const pollListReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
+        addedDataArrayLength: action.payload.length,
         pollList: [...state.pollList, ...action.payload],
-        pollListForChecking: action.payload,
         error: null,
       };
     case POLL_LIST_FAILURE:
@@ -40,12 +38,6 @@ const pollListReducer = (state = initialState, action) => {
       return {
         ...state,
         pollList: "",
-        pollListForChecking: [],
-      };
-    case POLL_LIST_SECOND_CALL:
-      return {
-        ...state,
-        pollListForChecking: action.payload,
       };
     default:
       return state;
