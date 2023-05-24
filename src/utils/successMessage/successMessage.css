@@ -1,43 +1,51 @@
     .modal-header-green {
-    background-color: #8ab580 !important;
-    color: #fff !important;
-    border-bottom: 1px solid #5f9565 !important;
-  }
-  
-  .modal-title-green {
-    color: #fff !important;
-  }
-  
-  .modal-body-green {
-    color: #1f3c0f !important;
-  }
-  
-  .modal-footer-green {
-    background-color: #8ab580 !important;
-    border-top: 1px solid #5f9565 !important;
-    color: #fff !important;
-  }
-  
-  .modal-footer-green .btn-secondary {
-    color: #fff !important;
-    background-color: #5f9565 !important;
-    border-color: #5f9565 !important;
-  }
-  
-  .modal-footer-green .btn-secondary:hover {
-    color: #fff !important;
-    background-color: #4e7d4f !important;
-    border-color: #4e7d4f !important;
-  }
-  
-  .modal-footer-green .btn-primary {
-    color: #fff !important;
-    background-color: #5f9565 !important;
-    border-color: #5f9565 !important;
-  }
-  
-  .modal-footer-green .btn-primary:hover {
-    color: #fff !important;
-    background-color: #4e7d4f !important;
-    border-color: #4e7d4f !important;
-  }
+      background-color: white;
+      color: #8ab580;
+    }
+
+    .modal-header-delete {
+      background-color: white;
+      color: red;
+    }
+
+    .modal-title-green {
+      color: #8ab580;
+    }
+
+    .modal-title-delete {
+      color: red;
+    }
+
+    .modal-footer-green {
+      background-color: white;
+      color: #8ab580;
+    }
+
+    .modal-footer-delete {
+      background-color: white;
+      color: white;
+    }
+
+    .modal-footer-green .btn-secondary {
+      color: #fff;
+      background-color: #5f9565;
+      border-color: none;
+      cursor: pointer;
+    }
+
+    .modal-footer-delete .btn-secondary {
+      color: white;
+      background-color: red;
+      border: none;
+    }
+
+    .modal-footer-green .btn-secondary:active {
+      color: #fff;
+      background-color: #4e7d4f;
+      cursor: pointer;
+    }
+
+    .modal-footer-delete .btn-secondary:active {
+      color: #fff;
+      background-color: #660212;
+    }
