@@ -3,9 +3,11 @@ import {
   POLL_LIST_SUCCESS,
   POLL_LIST_FAILURE,
   EMPTY_POLL_LIST,
+  POLL_LIST_SECOND_CALL,
 } from "../../constants";
 
 const initialState = {
+  status: "",
   pollList: "",
   pollListForChecking: [],
   loading: false,
@@ -39,6 +41,11 @@ const pollListReducer = (state = initialState, action) => {
         ...state,
         pollList: "",
         pollListForChecking: [],
+      };
+    case POLL_LIST_SECOND_CALL:
+      return {
+        ...state,
+        pollListForChecking: action.payload,
       };
     default:
       return state;

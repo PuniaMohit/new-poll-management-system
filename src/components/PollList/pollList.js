@@ -1,10 +1,11 @@
-import "./pollList.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
-import pollList from "../../redux/pollList/actions/pollList";
+import pollList, {
+  pollListSecondCall,
+} from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddEditPoll/addEditPoll";
 import voteCount, {
@@ -17,6 +18,7 @@ import deletePoll, {
 } from "../../redux/delete/actions/deletePoll";
 import singlePoll from "../../redux/singlePoll/actions/singlePoll";
 import { emptyPollList } from "../../redux/pollList/actions/pollList";
+import "./pollList.css";
 
 const PollList = () => {
   const pollQuestions = useSelector((state) => state.pollList.pollList);
@@ -44,27 +46,24 @@ const PollList = () => {
     optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
   };
 
-  let RealPollList = Boolean(pollQuestions.length % pageNumberLimit.limit);
-  let pollListArrayForCheck = Boolean(
-    pollListArrayToCheck.length % pageNumberLimit.limit
-  );
-  console.log(RealPollList);
+  let pollQuestionsLessThanLimit =
+    pollQuestions.length % pageNumberLimit.limit > pageNumberLimit.limit;
+
   useEffect(() => {
     dispatch(pollList(pageNumberLimit));
     setPollOptionIds({
       pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
       optionIds: JSON.parse(localStorage.getItem("optionIds")) || [],
     });
-  }, [pageNumberLimit.pageNumber]);
-
-  // useEffect(() => {
-  //   dispatch(pollList(pageNumberLimit));
-  // }, [pollListArrayToCheck]);
+  }, [pageNumberLimit]);
 
   useEffect(() => {
-    if (pollQuestions.length % pageNumberLimit.limit === 0) {
-    dispatch(pollList({pageNumber:pageNumberLimit.pageNumber+1, limit: 4,}))
-    }
+    dispatch(
+      pollListSecondCall({
+        pageNumber: pageNumberLimit.pageNumber + 1,
+        limit: 4,
+      })
+    );
   }, [pollQuestions]);
 
   useEffect(() => {
@@ -107,7 +106,9 @@ const PollList = () => {
           pollQuestions.map(({ title, optionList, id }, index) => (
             <div key={id}>
               <div className="title">
-                <div className="poll-title">{title}</div>
+                <div className="poll-title">
+                  {index + 1}. {title}
+                </div>
                 {user.user.roleId === 1 && (
                   <div className="edit-buttons">
                     <Button
@@ -177,11 +178,13 @@ const PollList = () => {
         <div class="show-more-poll-button-container">
           <button
             className={
-              RealPollList || pollListArrayForCheck
+              pollQuestionsLessThanLimit || !pollListArrayToCheck.length
                 ? "show-more-disabled-button"
                 : "show-more-poll-button"
             }
-            disabled={RealPollList || pollListArrayForCheck}
+            disabled={
+              pollQuestionsLessThanLimit || !pollListArrayToCheck.length
+            }
             onClick={() => {
               setPageNumberLimit((prevState) => ({
                 ...prevState,
@@ -189,7 +192,7 @@ const PollList = () => {
               }));
             }}
           >
-            More
+            Show More
           </button>
         </div>
       </div>
