@@ -1,10 +1,11 @@
-import "./pollList.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
-import pollList from "../../redux/pollList/actions/pollList";
+import pollList, {
+  pollListSecondCall,
+} from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
 import AddPoll from "../AddEditPoll/addEditPoll";
 import voteCount, {
@@ -16,14 +17,18 @@ import deletePoll, {
   emptyDeletePollSuccessStatus,
 } from "../../redux/delete/actions/deletePoll";
 import singlePoll from "../../redux/singlePoll/actions/singlePoll";
+import { emptyPollList } from "../../redux/pollList/actions/pollList";
+import "./pollList.css";
 
 const PollList = () => {
-  const pollQuestions = useSelector((state) => state.pollList);
+  const pollQuestions = useSelector((state) => state.pollList.pollList);
+  const loading = useSelector((state) => state.pollList.loading);
+  const addedDataArrayLength = useSelector(
+    (state) => state.pollList.addedDataArrayLength
+  );
   const user = useSelector((state) => state.login.user);
   const voteCountSuccess = useSelector((state) => state.voteCount.data);
-  const deletePollSuccess = useSelector(
-    (state) => state.deletePoll.data
-  );
+  const deletePollSuccess = useSelector((state) => state.deletePoll.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
@@ -37,16 +42,17 @@ const PollList = () => {
     limit: 4,
   });
 
+  const optionClickVoteCount = (pollID, optionId) => {
+    optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
+  };
+
   useEffect(() => {
+    dispatch(pollList(pageNumberLimit));
     setPollOptionIds({
       pollIds: JSON.parse(localStorage.getItem("pollIds")) || [],
       optionIds: JSON.parse(localStorage.getItem("optionIds")) || [],
     });
-  }, []);
-
-  useEffect(() => {
-    dispatch(pollList(pageNumberLimit));
-  }, []);
+  }, [pageNumberLimit]);
 
   useEffect(() => {
     if (voteCountSuccess) {
@@ -61,9 +67,9 @@ const PollList = () => {
     dispatch(emptyDeletePollSuccessStatus());
   }, [deletePollSuccess]);
 
-  const optionClickVoteCount = (pollID, optionId) => {
-    optionVoteCount(pollID, optionId, pollOptionIds, setPollOptionIds);
-  };
+  useEffect(() => {
+    return () => dispatch(emptyPollList());
+  }, []);
 
   return (
     <div>
@@ -84,17 +90,13 @@ const PollList = () => {
             </button>
           )}
         </div>
-        {pollQuestions.loading ? (
-          <div class="d-flex justify-content-center">
-            <div class="spinner-border text-success" role="status">
-              <span class="sr-only"></span>
-            </div>
-          </div>
-        ) : (
-          pollQuestions.pollList.map(({ title, optionList, id }, index) => (
+        {pollQuestions &&
+          pollQuestions.map(({ title, optionList, id }, index) => (
             <div key={id}>
               <div className="title">
-                <div className="poll-title">{title}</div>
+                <div className="poll-title">
+                  {index + 1}. {title}
+                </div>
                 {user.user.roleId === 1 && (
                   <div className="edit-buttons">
                     <Button
@@ -151,8 +153,34 @@ const PollList = () => {
                 );
               })}
             </div>
-          ))
+          ))}
+        {loading ? (
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only"></span>
+            </div>
+          </div>
+        ) : (
+          <></>
         )}
+        <div class="show-more-poll-button-container">
+          <button
+            className={
+              addedDataArrayLength < 4
+                ? "show-more-disabled-button"
+                : "show-more-poll-button"
+            }
+            disabled={addedDataArrayLength < 4}
+            onClick={() => {
+              setPageNumberLimit((prevState) => ({
+                ...prevState,
+                pageNumber: prevState.pageNumber + 1,
+              }));
+            }}
+          >
+            Show More
+          </button>
+        </div>
       </div>
     </div>
   );

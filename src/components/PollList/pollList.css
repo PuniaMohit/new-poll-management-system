@@ -50,7 +50,8 @@
 }
 
 .show-add-poll-button:active,
-.logout-button:active {
+.logout-button:active,
+.show-more-poll-button:active {
     background-color: #035638;
 }
 
@@ -96,4 +97,26 @@
 
 .vote-count {
     margin-left: 1%;
+}
+
+.show-more-poll-button {
+    background-color: #04AA6D;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5% 2%;
+    color: white;
+    cursor: pointer;
+}
+
+.show-more-poll-button-container {
+    text-align: center;
+    margin-bottom: 2%;
+}
+
+.show-more-disabled-button {
+    background-color: gray;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5% 2%;
+    color: white;
 }
