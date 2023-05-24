@@ -30,6 +30,9 @@ const PollList = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState({
     show: false,
     message: "",
+    deleteTheme: false,
+    id: "",
+    deletePollorOption: "",
   });
   const [pollOptionIds, setPollOptionIds] = useState({
     pollIds: [],
@@ -55,6 +58,7 @@ const PollList = () => {
   useEffect(() => {
     if (voteCountSuccess) {
       setShowSuccessMessage((prevData) => ({
+        ...prevData,
         show: true,
         message: "Vote Given Successfully",
       }));
@@ -68,6 +72,7 @@ const PollList = () => {
     if (deletePollSuccess) {
       dispatch(emptyDeletePollSuccessStatus());
       setShowSuccessMessage((prevData) => ({
+        ...prevData,
         show: true,
         message: "Poll Deleted Successfully",
       }));
@@ -80,7 +85,6 @@ const PollList = () => {
   useEffect(() => {
     return () => dispatch(emptyPollList());
   }, []);
-
   return (
     <div>
       <Header />
@@ -88,6 +92,9 @@ const PollList = () => {
         show={showSuccessMessage.show}
         setShow={setShowSuccessMessage}
         message={showSuccessMessage.message}
+        deleteTheme={showSuccessMessage.deleteTheme}
+        id={showSuccessMessage.id}
+        deletePollorOption={showSuccessMessage.deletePollorOption}
       />
       <div className="container">
         <div className="container-add-poll-button">
@@ -111,7 +118,15 @@ const PollList = () => {
                   <div className="edit-buttons">
                     <Button
                       className="btn-sm btn-light"
-                      onClick={() => dispatch(deletePoll(id))}
+                      onClick={() => {
+                        setShowSuccessMessage({
+                          show: true,
+                          message: "Are You Sure ?",
+                          deleteTheme: true,
+                          id: id,
+                          deletePollorOption: "poll",
+                        });
+                      }}
                     >
                       <Trash />
                     </Button>

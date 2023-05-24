@@ -47,7 +47,10 @@ const AddEditPoll = () => {
   const navigate = useNavigate();
   const [showSuccessMessage, setShowSuccessMessage] = useState({
     show: false,
-    titleMesasge: "",
+    message: "",
+    deleteTheme: false,
+    id: "",
+    deletePollorOption: "",
   });
 
   const [formValues, setFormValues] = useState({
@@ -111,8 +114,14 @@ const AddEditPoll = () => {
       }));
     } else {
       if (formValues.pollOptions.length > 3) {
-        dispatch(deletePollOptionAction(optionId));
-      } else {
+        // dispatch(deletePollOptionAction(optionId));
+        setShowSuccessMessage({
+          show: true,
+          titleMesasge: "Are You Sure",
+          deleteTheme: true,
+          id: optionId,
+          deletePollorOption: "option",
+        });
       }
     }
   };
@@ -164,10 +173,11 @@ const AddEditPoll = () => {
   };
   useEffect(() => {
     updatPollOptionDetails &&
-      setShowSuccessMessage({
+      setShowSuccessMessage((prevData) => ({
+        ...prevData,
         show: true,
         titleMesasge: "Option Successfully Updated",
-      });
+      }));
     dispatch(emptyUpdatePollOptionDetailsSuccessStatus());
     setEditPollOptionIndex(-1);
     dispatch(singlePoll(pollId));
@@ -175,20 +185,22 @@ const AddEditPoll = () => {
 
   useEffect(() => {
     deletePollOptionDetails &&
-      setShowSuccessMessage({
+      setShowSuccessMessage((prevData) => ({
+        ...prevData,
         show: true,
         titleMesasge: "Option Successfully Deleted",
-      });
+      }));
     dispatch(emptyDeletePollOptionDetailsSuccessStatus());
     dispatch(singlePoll(pollId));
   }, [deletePollOptionDetails]);
 
   useEffect(() => {
     updatPollTitleDetails &&
-      setShowSuccessMessage({
+      setShowSuccessMessage((prevData) => ({
+        ...prevData,
         show: true,
         titleMesasge: "Title Successfully Updated",
-      });
+      }));
     dispatch(emptyUpdatePollTitleDetailsSuccessStatus());
     dispatch(singlePoll(pollId));
   }, [updatPollTitleDetails]);
@@ -222,7 +234,10 @@ const AddEditPoll = () => {
       <SuccessMessage
         show={showSuccessMessage.show}
         setShow={setShowSuccessMessage}
+        deleteTheme={showSuccessMessage.deleteTheme}
         message={showSuccessMessage.titleMesasge}
+        deletePollorOption={showSuccessMessage.deletePollorOption}
+        id={showSuccessMessage.id}
       />
       <BackArrow />
       <div className="container-add-poll">
