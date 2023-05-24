@@ -273,11 +273,13 @@ const AddEditPoll = () => {
                 </div>
               </div>
             ))}
-            <div className="add-poll-container">
-              <button className=" add-poll-button" onClick={handleAddPoll}>
-                {mode === "edit" ? "UPDATE" : "Add Poll"}
-              </button>
-            </div>
+            {mode === "add" && (
+              <div className="add-poll-container">
+                <button className=" add-poll-button" onClick={handleAddPoll}>
+                  Add Poll
+                </button>
+              </div>
+            )}
           </div>
         </Modal.Body>
       </div>

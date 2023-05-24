@@ -3,11 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form } from "react-bootstrap";
 import { Trash, PencilSquare, ArrowRightSquare } from "react-bootstrap-icons";
-import pollList, {
-  pollListSecondCall,
-} from "../../redux/pollList/actions/pollList";
+import pollList, { emptyPollList } from "../../redux/pollList/actions/pollList";
 import Header from "../Header/header";
-import AddPoll from "../AddEditPoll/addEditPoll";
 import voteCount, {
   emptyVoteCountSuccessStatus,
 } from "../../redux/voteCount/actions/votecount";
@@ -17,7 +14,6 @@ import deletePoll, {
   emptyDeletePollSuccessStatus,
 } from "../../redux/delete/actions/deletePoll";
 import singlePoll from "../../redux/singlePoll/actions/singlePoll";
-import { emptyPollList } from "../../redux/pollList/actions/pollList";
 import "./pollList.css";
 
 const PollList = () => {
@@ -31,8 +27,10 @@ const PollList = () => {
   const deletePollSuccess = useSelector((state) => state.deletePoll.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showVoteCountSuccessMessage, setShowVoteCountSuccessMessage] =
-    useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState({
+    show: false,
+    message: "",
+  });
   const [pollOptionIds, setPollOptionIds] = useState({
     pollIds: [],
     optionIds: [],
@@ -56,14 +54,26 @@ const PollList = () => {
 
   useEffect(() => {
     if (voteCountSuccess) {
-      setShowVoteCountSuccessMessage(true);
-      dispatch(pollList(pageNumberLimit));
+      setShowSuccessMessage((prevData) => ({
+        show: true,
+        message: "Vote Given Successfully",
+      }));
+      dispatch(emptyPollList());
+      setPageNumberLimit((prevData) => ({ ...prevData, pageNumber: 1 }));
     }
     dispatch(emptyVoteCountSuccessStatus());
   }, [voteCountSuccess]);
 
   useEffect(() => {
-    deletePollSuccess && dispatch(pollList(pageNumberLimit));
+    if (deletePollSuccess) {
+      dispatch(emptyDeletePollSuccessStatus());
+      setShowSuccessMessage((prevData) => ({
+        show: true,
+        message: "Poll Deleted Successfully",
+      }));
+      dispatch(emptyPollList());
+      setPageNumberLimit((prevData) => ({ ...prevData, pageNumber: 1 }));
+    }
     dispatch(emptyDeletePollSuccessStatus());
   }, [deletePollSuccess]);
 
@@ -75,9 +85,9 @@ const PollList = () => {
     <div>
       <Header />
       <SuccessMessage
-        show={showVoteCountSuccessMessage}
-        setShow={setShowVoteCountSuccessMessage}
-        message="Vote Given Successfully"
+        show={showSuccessMessage.show}
+        setShow={setShowSuccessMessage}
+        message={showSuccessMessage.message}
       />
       <div className="container">
         <div className="container-add-poll-button">
